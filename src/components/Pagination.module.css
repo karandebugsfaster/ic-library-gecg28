@@ -1,0 +1,95 @@
+/* src/components/Pagination.module.css */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 48px;
+  padding: 24px 0;
+}
+
+.pageButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.pageButton:hover:not(:disabled) {
+  border-color: #667eea;
+  background: #f9fafb;
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pageNumber {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+}
+
+.pageNumber:hover {
+  border-color: #667eea;
+  background: #f9fafb;
+}
+
+.pageNumber.active {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+.ellipsis {
+  padding: 0 8px;
+  color: #999;
+  font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .pagination {
+    gap: 8px;
+  }
+
+  .pageButton {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .pageNumber {
+    min-width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  /* Hide text on mobile, keep icons */
+  .pageButton span {
+    display: none;
+  }
+}

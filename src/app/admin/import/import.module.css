@@ -1,0 +1,72 @@
+/* src/app/admin/import/import.module.css */
+
+.container {
+  max-width: 800px;
+  margin: 48px auto;
+  padding: 24px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.instruction {
+  margin-bottom: 24px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.fileInput {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 2px dashed #e5e7eb;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.fileName {
+  color: #667eea;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.importButton {
+  width: 100%;
+  padding: 14px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.importButton:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.importButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.success {
+  margin-top: 24px;
+  padding: 16px;
+  background: #d4edda;
+  border-radius: 8px;
+  color: #155724;
+}
+
+.error {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f8d7da;
+  border-radius: 8px;
+  color: #721c24;
+}

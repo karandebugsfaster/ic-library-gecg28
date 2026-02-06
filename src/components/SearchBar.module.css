@@ -1,0 +1,59 @@
+/* src/components/SearchBar.module.css */
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 14px 48px 14px 48px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  transition: all 0.2s;
+  outline: none;
+  background: white;
+}
+
+.searchInput:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.searchInput::placeholder {
+  color: #999;
+}
+
+.clearButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f3f4f6;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.clearButton:hover {
+  background: #e5e7eb;
+  color: #333;
+}

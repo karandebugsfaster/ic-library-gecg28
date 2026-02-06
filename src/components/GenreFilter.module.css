@@ -1,0 +1,77 @@
+/* src/components/GenreFilter.module.css */
+
+.filterContainer {
+  position: relative;
+}
+
+.filterButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #333;
+  white-space: nowrap;
+}
+
+.filterButton:hover {
+  border-color: #667eea;
+  background: #f9fafb;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 220px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  padding: 8px;
+}
+
+.dropdownItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: #333;
+}
+
+.dropdownItem:hover {
+  background: #f3f4f6;
+}
+
+.dropdownItem.active {
+  background: #ede9fe;
+  color: #667eea;
+  font-weight: 600;
+}
+
+.dropdownItem.active:hover {
+  background: #e0d5ff;
+}

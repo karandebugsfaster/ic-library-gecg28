@@ -1,0 +1,130 @@
+/* src/app/page.module.css */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
+  padding: 24px;
+}
+
+.hero {
+  text-align: center;
+  padding: 48px 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 48px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 16px 0;
+}
+
+.heroSubtitle {
+  font-size: 18px;
+  color: #666;
+  margin: 0;
+}
+
+.filterBar {
+  display: flex;
+  gap: 16px;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  align-items: center;
+}
+
+.resultsInfo {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  color: #666;
+  font-size: 14px;
+}
+
+.booksGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  color: #666;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  color: #999;
+  text-align: center;
+}
+
+.emptyState svg {
+  margin-bottom: 24px;
+  opacity: 0.3;
+}
+
+.emptyState h3 {
+  font-size: 20px;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.emptyState p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 32px;
+  }
+
+  .heroSubtitle {
+    font-size: 16px;
+  }
+
+  .filterBar {
+    flex-direction: column;
+  }
+
+  .booksGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .booksGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
