@@ -24,6 +24,7 @@
   transition: all 0.2s;
   outline: none;
   background: white;
+  color: rgb(83, 82, 82);
 }
 
 .searchInput:focus {

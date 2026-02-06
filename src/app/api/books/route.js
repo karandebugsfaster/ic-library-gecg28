@@ -10,19 +10,18 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     
     // Pagination
-    const page = parseInt(searchParams.get('page')) || 1;
+    const page = Math.max(1, parseInt(searchParams.get('page')) || 1);
     const limit = parseInt(searchParams.get('limit')) || 20;
     const skip = (page - 1) * limit;
 
     // Filters
-    const search = searchParams.get('search') || '';
-    const genre = searchParams.get('genre') || '';
+    const search = searchParams.get('search')?.trim() || '';
+    const genre = searchParams.get('genre')?.trim() || '';
     const available = searchParams.get('available');
 
     // Build query
     const query = {};
 
-    // Text search
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
@@ -31,21 +30,21 @@ export async function GET(request) {
       ];
     }
 
-    // Genre filter
     if (genre && genre !== 'all') {
       query.genre = genre;
     }
 
-    // Availability filter
     if (available === 'true') {
       query.rentalStatus = 'AVAILABLE';
     }
+
+    console.log('📊 Books API Query:', { page, limit, skip, query });
 
     // Execute query with pagination
     const [books, totalCount] = await Promise.all([
       Book.find(query)
         .select('title author genre rentalStatus isbn publishedYear coverImage')
-        .sort({ title: 1 })
+        .sort({ title: 1, _id: 1 }) // ✅ CHANGED: Consistent sorting
         .skip(skip)
         .limit(limit)
         .lean(),
@@ -53,6 +52,8 @@ export async function GET(request) {
     ]);
 
     const totalPages = Math.ceil(totalCount / limit);
+
+    console.log(`📚 Found ${books.length} books (page ${page}/${totalPages})`);
 
     return Response.json({
       success: true,
@@ -70,7 +71,7 @@ export async function GET(request) {
     });
 
   } catch (error) {
-    console.error('Fetch books error:', error);
+    console.error('❌ Fetch books error:', error);
     return Response.json({
       success: false,
       error: 'Failed to fetch books'

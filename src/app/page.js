@@ -27,7 +27,7 @@
 //   // Fetch books
 //   const fetchBooks = useCallback(async () => {
 //     setLoading(true);
-    
+
 //     try {
 //       const params = new URLSearchParams({
 //         page: filters.page.toString(),
@@ -118,7 +118,7 @@
 //             ))}
 //           </div>
 
-//           <Pagination 
+//           <Pagination
 //             currentPage={pagination.currentPage}
 //             totalPages={pagination.totalPages}
 //             onPageChange={handlePageChange}
@@ -130,14 +130,14 @@
 // }
 // src/app/page.js
 
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import BookCard from '@/components/BookCard';
-import SearchBar from '@/components/SearchBar';
-import GenreFilter from '@/components/GenreFilter';
-import Pagination from '@/components/Pagination';
-import styles from './page.module.css';
+import { useState, useEffect } from "react";
+import BookCard from "@/components/BookCard";
+import SearchBar from "@/components/SearchBar";
+import GenreFilter from "@/components/GenreFilter";
+import Pagination from "@/components/Pagination";
+import styles from "./page.module.css";
 
 export default function HomePage() {
   const [books, setBooks] = useState([]);
@@ -145,38 +145,44 @@ export default function HomePage() {
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
-    totalBooks: 0
+    totalBooks: 0,
   });
 
   const [filters, setFilters] = useState({
-    search: '',
-    genre: 'all',
-    page: 1
+    search: "",
+    genre: "all",
+    page: 1,
   });
 
   // ✅ FIX: Use filters as direct dependencies, not fetchBooks
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
-      
+
       try {
         const params = new URLSearchParams({
           page: filters.page.toString(),
-          limit: '20'
+          limit: "20",
         });
 
-        if (filters.search) params.append('search', filters.search);
-        if (filters.genre !== 'all') params.append('genre', filters.genre);
+        if (filters.search) params.append("search", filters.search);
+        if (filters.genre !== "all") params.append("genre", filters.genre);
 
-        const response = await fetch(`/api/books?${params}`);
+        const response = await fetch(`/api/books?${params}`, {
+          cache: "no-store",
+        });
+
         const data = await response.json();
 
         if (data.success) {
           setBooks(data.data.books);
-          setPagination(data.data.pagination);
+          setPagination({
+            ...data.data.pagination,
+            currentPage: filters.page, // 🔥 source of truth
+          });
         }
       } catch (error) {
-        console.error('Failed to fetch books:', error);
+        console.error("Failed to fetch books:", error);
       } finally {
         setLoading(false);
       }
@@ -186,27 +192,26 @@ export default function HomePage() {
   }, [filters.search, filters.genre, filters.page]); // ✅ Direct dependencies
 
   const handleSearch = (query) => {
-    setFilters(prev => ({ ...prev, search: query, page: 1 }));
+    setFilters((prev) => ({ ...prev, search: query, page: 1 }));
   };
 
   const handleGenreChange = (genre) => {
-    setFilters(prev => ({ ...prev, genre, page: 1 }));
+    setFilters((prev) => ({ ...prev, genre, page: 1 }));
   };
 
   const handlePageChange = (page) => {
-    setFilters(prev => ({ ...prev, page }));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setFilters((prev) => ({ ...prev, page }));
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div className={styles.container}>
       {/* Hero Section */}
       <header className={styles.hero}>
-        <h1 className={styles.heroTitle}>
-          IC Department Library
-        </h1>
+        <h1 className={styles.heroTitle}>IC Department Library</h1>
         <p className={styles.heroSubtitle}>
-          Discover and rent from our collection of {pagination.totalBooks}+ books
+          Discover and rent from our collection of {pagination.totalBooks}+
+          books
         </p>
       </header>
 
@@ -217,11 +222,11 @@ export default function HomePage() {
       </div>
 
       {/* Results Info */}
-      {filters.search || filters.genre !== 'all' ? (
+      {filters.search || filters.genre !== "all" ? (
         <div className={styles.resultsInfo}>
           Showing {books.length} of {pagination.totalBooks} books
           {filters.search && ` for "${filters.search}"`}
-          {filters.genre !== 'all' && ` in ${filters.genre}`}
+          {filters.genre !== "all" && ` in ${filters.genre}`}
         </div>
       ) : null}
 
@@ -233,7 +238,13 @@ export default function HomePage() {
         </div>
       ) : books.length === 0 ? (
         <div className={styles.emptyState}>
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <svg
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           </svg>
@@ -243,12 +254,12 @@ export default function HomePage() {
       ) : (
         <>
           <div className={styles.booksGrid}>
-            {books.map(book => (
+            {books.map((book) => (
               <BookCard key={book._id} book={book} />
             ))}
           </div>
 
-          <Pagination 
+          <Pagination
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
