@@ -72,7 +72,7 @@ export default function GenreFilter({ onGenreChange }) {
         </svg>
         
         <span className={styles.selectedText}>
-          {selectedGenre === 'all' ? 'All Genres' : selectedGenre}
+          {selectedGenre === 'all' ? 'All Categories' : selectedGenre}
         </span>
         
         <svg 
@@ -93,14 +93,14 @@ export default function GenreFilter({ onGenreChange }) {
       {/* Dropdown Menu */}
       {isOpen && (
         <div className={styles.dropdown} role="listbox">
-          {/* All Genres Option */}
+          {/* All categories Option */}
           <button
             className={`${styles.dropdownItem} ${selectedGenre === 'all' ? styles.active : ''}`}
             onClick={() => handleSelect('all')}
             role="option"
             aria-selected={selectedGenre === 'all'}
           >
-            <span>All Genres</span>
+            <span>All categories</span>
             {selectedGenre === 'all' && (
               <svg 
                 className={styles.checkmark}

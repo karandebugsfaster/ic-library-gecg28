@@ -1,0 +1,47 @@
+/* src/app/about/about.module.css - About Page Layout */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+}
+
+.header {
+  background: white;
+  padding: 16px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.backButton {
+  padding: 10px 20px;
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backButton:hover,
+.backButton:active {
+  background: #667eea;
+  color: white;
+  transform: scale(0.98);
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .header {
+    padding: 12px 16px;
+  }
+
+  .backButton {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}

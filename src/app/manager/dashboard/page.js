@@ -164,7 +164,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
         </div>
         <div className={styles.headerActions}>
           <button
-            onClick={() => router.push("/admin/import")}
+            onClick={() => router.push("/manager/import")}
             className={styles.importButton}
           >
             📥 Import Books

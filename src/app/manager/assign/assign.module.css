@@ -28,6 +28,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  color: #333;
 }
 
 .backButton:hover {
@@ -117,4 +118,7 @@
   color: #721c24;
   border-radius: 8px;
   font-weight: 600;
+}
+.formInput{
+  color: #333;
 }

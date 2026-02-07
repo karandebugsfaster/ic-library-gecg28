@@ -109,6 +109,7 @@ export default function AssignBookPage() {
             <input
               type="text"
               value={formData.enrollmentNumber}
+              className={styles.formInput}
               onChange={(e) => setFormData({ ...formData, enrollmentNumber: e.target.value })}
               placeholder="e.g., 2417001123"
               required
@@ -121,6 +122,7 @@ export default function AssignBookPage() {
             <input
               type="text"
               value={searchQuery}
+              className={styles.formInput}
               onChange={(e) => handleSearchBooks(e.target.value)}
               placeholder="Search by title, author, or ISBN"
             />
@@ -130,6 +132,7 @@ export default function AssignBookPage() {
             <label>Select Book * ({filteredBooks.length} available)</label>
             <select
               value={formData.bookId}
+              className={styles.formInput}
               onChange={(e) => setFormData({ ...formData, bookId: e.target.value })}
               required
             >
@@ -147,6 +150,7 @@ export default function AssignBookPage() {
             <input
               type="number"
               value={formData.rentalDays}
+              className={styles.formInput}
               onChange={(e) => setFormData({ ...formData, rentalDays: parseInt(e.target.value) })}
               min="1"
               max="30"
