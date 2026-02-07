@@ -109,7 +109,7 @@ UserSchema.methods.checkRentalEligibility = function () {
   if (this.accountStatus === "PENALTY" && this.isPenaltyActive) {
     return {
       canRent: false,
-      reason: `Your account is under penalty until ${this.penaltyUntil.toDateString()}`,
+      reason: `Your account is under penalty until ${this.penaltyUntil.toLocaleDateString("en-GB")}`,
     };
   }
 

@@ -416,7 +416,7 @@ export default function SignInModal({ onClose, onSuccess }) {
                   required
                   disabled={otpSent && action === 'signin'}
                 />
-                <small>Only IC department (code 17) students</small>
+                {/* <small>Only IC department (code 17) students</small> */}
               </div>
 
               {action === 'signup' && (

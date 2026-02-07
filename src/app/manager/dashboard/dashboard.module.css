@@ -1,111 +1,129 @@
-/* src/app/admin/dashboard/dashboard.module.css */
+/* src/app/manager/dashboard/dashboard.module.css - Mobile First */
 
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 24px;
-  background: #f9fafb;
   min-height: 100vh;
+  background: #f9fafb;
+  padding: 12px;
 }
 
-/* Header */
+/* Header - Mobile Optimized */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
   background: white;
-  padding: 24px 32px;
-  border-radius: 16px;
+  padding: 16px;
+  border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 16px;
 }
 
 .header h1 {
-  margin: 0;
-  font-size: 32px;
+  margin: 0 0 4px 0;
+  font-size: 20px;
   font-weight: 800;
   color: #1a1a1a;
 }
 
 .subtitle {
-  margin: 4px 0 0 0;
+  margin: 0 0 12px 0;
   color: #666;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .headerActions {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.importButton,
+.assignButton,
+.backButton,
+.logoutButton {
+  flex: 1;
+  min-width: calc(50% - 4px);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .importButton {
-  padding: 12px 24px;
   background: #667eea;
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-.importButton:hover {
+.importButton:active {
   background: #5568d3;
+  transform: scale(0.98);
+}
+
+.assignButton {
+  background: #10b981;
+  color: white;
+}
+
+.assignButton:active {
+  background: #059669;
+  transform: scale(0.98);
 }
 
 .backButton {
-  padding: 12px 24px;
   background: white;
   color: #667eea;
   border: 2px solid #667eea;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-.backButton:hover {
+.backButton:active {
   background: #f9fafb;
 }
 
-/* Stats Grid */
+.logoutButton {
+  background: #ef4444;
+  color: white;
+}
+
+.logoutButton:active {
+  background: #dc2626;
+  transform: scale(0.98);
+}
+
+/* Stats Grid - Mobile Stack */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .statCard {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 28px;
-  border-radius: 16px;
+  padding: 20px;
+  border-radius: 12px;
   color: white;
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  transition: transform 0.2s;
-}
-
-.statCard:hover {
-  transform: translateY(-4px);
+  gap: 16px;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .statIcon {
-  font-size: 48px;
+  font-size: 36px;
   opacity: 0.9;
+  flex-shrink: 0;
 }
 
 .statContent {
   flex: 1;
+  min-width: 0;
 }
 
 .statContent h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
+  margin: 0 0 6px 0;
+  font-size: 11px;
   opacity: 0.9;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -113,44 +131,53 @@
 }
 
 .statValue {
-  font-size: 42px;
+  font-size: 32px;
   font-weight: 800;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  line-height: 1;
 }
 
 .statBreakdown {
   display: flex;
-  gap: 16px;
-  font-size: 13px;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
   opacity: 0.85;
 }
 
-/* Tabs */
+/* Tabs - Horizontal Scroll on Mobile */
 .tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   background: white;
   padding: 8px;
-  border-radius: 12px;
-  margin-bottom: 24px;
+  border-radius: 10px;
+  margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .tab {
-  padding: 12px 20px;
+  padding: 10px 14px;
   background: none;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   color: #666;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.tab:hover {
+.tab:active {
   background: #f3f4f6;
   color: #667eea;
 }
@@ -163,130 +190,217 @@
 /* Content */
 .content {
   background: white;
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: 12px;
+  padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  min-height: 400px;
+  min-height: 300px;
 }
 
 /* Overview */
 .overview {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 20px;
 }
 
 .overviewSection h2 {
-  margin: 0 0 16px 0;
-  font-size: 20px;
+  margin: 0 0 12px 0;
+  font-size: 16px;
   color: #1a1a1a;
+  font-weight: 700;
 }
 
 .quickStats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
-  padding: 20px;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 16px;
   background: #f9fafb;
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .quickStats div {
-  font-size: 15px;
+  font-size: 13px;
   color: #555;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.quickStats div:last-child {
+  border-bottom: none;
 }
 
 .quickStats strong {
   color: #667eea;
-  font-size: 18px;
+  font-size: 16px;
+  display: block;
+  margin-top: 4px;
 }
 
-.overdueQuickList {
+.overdueQuickList,
+.dueSoonQuickList {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+}
+
+.overdueQuickItem,
+.dueSoonQuickItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
 }
 
 .overdueQuickItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
   background: #fff3cd;
-  border-radius: 8px;
   border-left: 4px solid #ffc107;
+}
+
+.dueSoonQuickItem {
+  background: #e0f2fe;
+  border-left: 4px solid #0ea5e9;
+}
+
+.overdueDays,
+.dueSoonLabel {
+  font-weight: 700;
+  font-size: 12px;
 }
 
 .overdueDays {
   color: #dc2626;
-  font-weight: 700;
-  font-size: 14px;
 }
 
-/* Tables */
+.dueSoonLabel {
+  color: #0369a1;
+}
+
+/* Section Header */
+.sectionHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #1a1a1a;
+  font-weight: 700;
+}
+
+.whatsappButton {
+  padding: 12px 16px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.whatsappButton:active {
+  background: #1fb855;
+  transform: scale(0.98);
+}
+
+/* Tables - Mobile Optimized */
 .tableContainer {
   overflow-x: auto;
-}
-
-.tableContainer h2 {
-  margin: 0 0 20px 0;
-  font-size: 22px;
-  color: #1a1a1a;
+  -webkit-overflow-scrolling: touch;
+  margin: -16px;
+  padding: 16px;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 12px;
+  min-width: 600px;
 }
 
 .table thead {
   background: #f9fafb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .table th {
-  padding: 14px 16px;
+  padding: 10px 8px;
   text-align: left;
   font-weight: 700;
-  color: #333;
+  color: #374151;
   border-bottom: 2px solid #e5e7eb;
   white-space: nowrap;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .table td {
-  padding: 16px;
+  padding: 12px 8px;
   border-bottom: 1px solid #f3f4f6;
   color: #555;
+  vertical-align: middle;
 }
 
 .table tbody tr {
   transition: background 0.15s;
 }
 
-.table tbody tr:hover {
+.table tbody tr:active {
   background: #f9fafb;
 }
 
 .table small {
   color: #999;
-  font-size: 12px;
+  font-size: 10px;
+  display: block;
+  margin-top: 2px;
+}
+
+.table strong {
+  color: #1a1a1a;
+  font-size: 13px;
+  display: block;
+  margin-bottom: 2px;
 }
 
 .overdueRow {
   background: #fef2f2;
 }
 
-.overdueRow:hover {
+.overdueRow:active {
   background: #fee2e2;
+}
+
+.dueSoonRow {
+  background: #eff6ff;
+}
+
+.dueSoonRow:active {
+  background: #dbeafe;
 }
 
 /* Badges */
 .badge {
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
   white-space: nowrap;
+  display: inline-block;
 }
 
 .badgeOk {
@@ -319,12 +433,45 @@
   color: #383d41;
 }
 
-/* Empty State */
+/* Action Buttons */
+.returnButton,
+.whatsappButtonSmall {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.returnButton {
+  background: #10b981;
+  color: white;
+}
+
+.returnButton:active {
+  background: #059669;
+  transform: scale(0.95);
+}
+
+.whatsappButtonSmall {
+  background: #25D366;
+  color: white;
+}
+
+.whatsappButtonSmall:active {
+  background: #1fb855;
+  transform: scale(0.95);
+}
+
+/* Empty Message */
 .emptyMessage {
   text-align: center;
-  padding: 60px 20px;
-  color: #999;
-  font-size: 16px;
+  padding: 40px 16px;
+  color: #9ca3af;
+  font-size: 14px;
 }
 
 /* Loading */
@@ -338,9 +485,9 @@
 }
 
 .spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #e5e7eb;
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
   border-top-color: #667eea;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -353,163 +500,232 @@
 
 .error {
   text-align: center;
-  padding: 60px 20px;
+  padding: 40px 16px;
   color: #ef4444;
-  font-size: 18px;
+  font-size: 16px;
 }
 
-/* Responsive */
-@media (max-width: 968px) {
+/* Tablet Breakpoint */
+@media (min-width: 640px) {
+  .container {
+    padding: 20px;
+  }
+
   .header {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
+    padding: 20px 24px;
+  }
+
+  .header h1 {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 16px;
   }
 
   .headerActions {
-    width: 100%;
-    justify-content: center;
+    gap: 12px;
   }
 
-  .table {
+  .importButton,
+  .assignButton,
+  .backButton,
+  .logoutButton {
+    flex: initial;
+    min-width: auto;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .statCard {
+    padding: 24px;
+  }
+
+  .statIcon {
+    font-size: 42px;
+  }
+
+  .statContent h3 {
     font-size: 12px;
   }
 
-  .table th,
+  .statValue {
+    font-size: 38px;
+  }
+
+  .statBreakdown {
+    flex-direction: row;
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  .tabs {
+    padding: 10px;
+    gap: 8px;
+    overflow-x: visible;
+  }
+
+  .tab {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .content {
+    padding: 24px;
+  }
+
+  .overviewSection h2 {
+    font-size: 18px;
+  }
+
+  .quickStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sectionHeader {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sectionHeader h2 {
+    font-size: 18px;
+  }
+
+  .whatsappButton {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .tableContainer {
+    margin: 0;
+    padding: 0;
+  }
+
+  .table {
+    font-size: 13px;
+  }
+
+  .table th {
+    padding: 12px 12px;
+    font-size: 12px;
+  }
+
   .table td {
-    padding: 10px 8px;
+    padding: 14px 12px;
+  }
+
+  .table small {
+    font-size: 11px;
+  }
+
+  .table strong {
+    font-size: 14px;
+  }
+
+  .badge {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .returnButton,
+  .whatsappButtonSmall {
+    padding: 8px 14px;
+    font-size: 12px;
   }
 }
-/* Add to dashboard.module.css */
 
-.assignButton {
-  padding: 12px 24px;
-  background: #10b981;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+/* Desktop Breakpoint */
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+  }
 
-.assignButton:hover {
-  background: #059669;
-}
+  .header h1 {
+    font-size: 32px;
+  }
 
-.logoutButton {
-  padding: 12px 24px;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+  .subtitle {
+    font-size: 14px;
+  }
 
-.logoutButton:hover {
-  background: #dc2626;
-}
-/* Add to dashboard.module.css */
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+  }
 
-.returnButton {
-  padding: 8px 16px;
-  background: #10b981;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
+  .statCard {
+    padding: 28px 24px;
+  }
 
-.returnButton:hover {
-  background: #059669;
-  transform: translateY(-2px);
-}
-/* Add to dashboard.module.css */
+  .statIcon {
+    font-size: 48px;
+  }
 
-.sectionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
+  .statContent h3 {
+    font-size: 13px;
+  }
 
-.sectionHeader h2 {
-  margin: 0;
-  font-size: 22px;
-  color: #1a1a1a;
-}
+  .statValue {
+    font-size: 42px;
+  }
 
-.whatsappButton {
-  padding: 12px 24px;
-  background: #25D366;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+  .statBreakdown {
+    font-size: 13px;
+  }
 
-.whatsappButton:hover {
-  background: #1fb855;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-}
+  .content {
+    padding: 32px;
+  }
 
-.whatsappButtonSmall {
-  padding: 6px 12px;
-  background: #25D366;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
+  .overviewSection h2 {
+    font-size: 20px;
+  }
 
-.whatsappButtonSmall:hover {
-  background: #1fb855;
-}
+  .quickStats {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
-.dueSoonRow {
-  background: #fff9e6;
-}
+  .table {
+    font-size: 14px;
+    min-width: auto;
+  }
 
-.dueSoonRow:hover {
-  background: #fff3cd;
-}
+  .table th {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
 
-.dueSoonQuickList {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+  .table td {
+    padding: 16px;
+  }
 
-.dueSoonQuickItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  background: #fff3cd;
-  border-radius: 8px;
-  border-left: 4px solid #ffc107;
-}
+  .table small {
+    font-size: 12px;
+  }
 
-.dueSoonLabel {
-  color: #856404;
-  font-weight: 700;
-  font-size: 14px;
+  .table strong {
+    font-size: 15px;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .returnButton,
+  .whatsappButtonSmall {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
 }

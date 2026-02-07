@@ -1,125 +1,74 @@
-// // src/components/SearchBar.js
+// src/components/SearchBar.js - Fixed for Pagination
 
-// 'use client';
+'use client';
 
-// import { useState, useEffect } from 'react';
-// import styles from './SearchBar.module.css';
+import { useState, useEffect, useRef } from 'react';
+import styles from './SearchBar.module.css';
 
-// export default function SearchBar({ onSearch, placeholder = "Search books, authors, ISBN..." }) {
-//   const [query, setQuery] = useState('');
+export default function SearchBar({ onSearch }) {
+  const [query, setQuery] = useState('');
+  const debounceTimer = useRef(null);
 
-//   // Debounce search
-//   useEffect(() => {
-//     const timer = setTimeout(() => {
-//       onSearch(query);
-//     }, 300); // 300ms debounce
-
-//     return () => clearTimeout(timer);
-//   }, [query, onSearch]);
-
-//   return (
-// <div className={styles.searchContainer}>
-//   <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-//     <circle cx="11" cy="11" r="8"></circle>
-//     <path d="m21 21-4.35-4.35"></path>
-//   </svg>
-
-//   <input
-//     type="text"
-//     className={styles.searchInput}
-//     placeholder={placeholder}
-//     value={query}
-//     onChange={(e) => setQuery(e.target.value)}
-//   />
-
-//   {query && (
-//     <button
-//       className={styles.clearButton}
-//       onClick={() => setQuery('')}
-//       aria-label="Clear search"
-//     >
-//       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-//         <line x1="18" y1="6" x2="6" y2="18"></line>
-//         <line x1="6" y1="6" x2="18" y2="18"></line>
-//       </svg>
-//     </button>
-//   )}
-// </div>
-//   );
-// }
-"use client";
-
-import { useState, useEffect, useRef } from "react";
-import styles from "./SearchBar.module.css";
-
-export default function SearchBar({
-  onSearch,
-  placeholder = "Search books, authors, ISBN...",
-}) {
-  const [query, setQuery] = useState("");
-  const isFirstRender = useRef(true);
-
+  // Debounce search with cleanup
   useEffect(() => {
-    // 🚫 Skip first render
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
+    // Clear existing timer
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
 
-    const timer = setTimeout(() => {
+    // Set new timer
+    debounceTimer.current = setTimeout(() => {
       onSearch(query);
     }, 300);
 
-    return () => clearTimeout(timer);
-  }, [query]); // ❗ REMOVE onSearch from deps
+    // Cleanup on unmount
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, [query]); // Only depend on query, not onSearch
+
+  const handleClear = () => {
+    setQuery('');
+  };
 
   return (
-    // <div className={styles.searchContainer}>
-    //   <input
-    //     type="text"
-    //     className={styles.searchInput}
-    //     placeholder={placeholder}
-    //     value={query}
-    //     onChange={(e) => setQuery(e.target.value)}
-    //   />
-    // </div>
     <div className={styles.searchContainer}>
-      <svg
-        className={styles.searchIcon}
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-      >
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.35-4.35"></path>
-      </svg>
+      {/* Search Icon */}
+      <div className={styles.searchIcon}>
+        <svg 
+          width="20" 
+          height="20" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </div>
 
+      {/* Search Input */}
       <input
         type="text"
-        className={styles.searchInput}
-        placeholder={placeholder}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search books, authors, ISBN..."
+        className={styles.searchInput}
       />
 
+      {/* Clear Button */}
       {query && (
         <button
+          onClick={handleClear}
           className={styles.clearButton}
-          onClick={() => setQuery("")}
           aria-label="Clear search"
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
+          ✕
         </button>
       )}
     </div>

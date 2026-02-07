@@ -1,22 +1,22 @@
 // src/app/student/profile/page.js
 
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getUserSession, clearUserSession } from '@/lib/utils/session';
-import styles from './profile.module.css';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getUserSession, clearUserSession } from "@/lib/utils/session";
+import styles from "./profile.module.css";
 
 export default function StudentProfilePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [activeTab, setActiveTab] = useState('active');
+  const [activeTab, setActiveTab] = useState("active");
 
   useEffect(() => {
     const session = getUserSession();
-    if (!session || session.role !== 'student') {
-      router.push('/');
+    if (!session || session.role !== "student") {
+      router.push("/");
       return;
     }
     fetchProfile(session.id);
@@ -24,10 +24,10 @@ export default function StudentProfilePage() {
 
   const fetchProfile = async (userId) => {
     try {
-      const response = await fetch('/api/users/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId })
+      const response = await fetch("/api/users/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
       });
 
       const data = await response.json();
@@ -36,7 +36,7 @@ export default function StudentProfilePage() {
         setProfile(data.data);
       }
     } catch (error) {
-      console.error('Failed to fetch profile:', error);
+      console.error("Failed to fetch profile:", error);
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ export default function StudentProfilePage() {
 
   const handleLogout = () => {
     clearUserSession();
-    router.push('/');
+    router.push("/");
   };
 
   const getDaysRemaining = (dueDate) => {
@@ -73,7 +73,7 @@ export default function StudentProfilePage() {
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <button className={styles.backButton} onClick={() => router.push('/')}>
+        <button className={styles.backButton} onClick={() => router.push("/")}>
           ← Back to Library
         </button>
         <button className={styles.logoutButton} onClick={handleLogout}>
@@ -83,7 +83,8 @@ export default function StudentProfilePage() {
 
       {/* Info Banner */}
       <div className={styles.infoBanner}>
-        <strong>ℹ️ Note:</strong> You can only view your rentals here. To rent or return books, please visit the library manager.
+        <strong>ℹ️ Note:</strong> You can only view your rentals here. To rent
+        or return books, please visit the library manager.
       </div>
 
       {/* Profile Card */}
@@ -113,10 +114,15 @@ export default function StudentProfilePage() {
       </div>
 
       {/* Account Status Warnings */}
-      {user.accountStatus !== 'ACTIVE' && (
+      {user.accountStatus !== "ACTIVE" && (
         <div className={styles.warningBanner}>
           <strong>⚠️ Account Status: {user.accountStatus}</strong>
-          {user.penaltyUntil && <p>Penalty until: {new Date(user.penaltyUntil).toLocaleDateString()}</p>}
+          {user.penaltyUntil && (
+            <p>
+              Penalty until:{" "}
+              {new Date(user.penaltyUntil).toLocaleDateString("en-GB")}
+            </p>
+          )}
           {user.penaltyReason && <p>Reason: {user.penaltyReason}</p>}
         </div>
       )}
@@ -125,10 +131,12 @@ export default function StudentProfilePage() {
         <div className={styles.overdueAlert}>
           <h3>🚨 Overdue Books ({overdueRentals.length})</h3>
           <p>Please return these books to the library manager immediately</p>
-          {overdueRentals.map(rental => (
+          {overdueRentals.map((rental) => (
             <div key={rental._id} className={styles.overdueItem}>
               <strong>{rental.bookSnapshot.title}</strong>
-              <span>Due: {new Date(rental.dueDate).toLocaleDateString()}</span>
+              <span>
+                Due: {new Date(rental.dueDate).toLocaleDateString("en-GB")}
+              </span>
             </div>
           ))}
         </div>
@@ -137,21 +145,21 @@ export default function StudentProfilePage() {
       {/* Tabs */}
       <div className={styles.tabs}>
         <button
-          className={`${styles.tab} ${activeTab === 'active' ? styles.activeTab : ''}`}
-          onClick={() => setActiveTab('active')}
+          className={`${styles.tab} ${activeTab === "active" ? styles.activeTab : ""}`}
+          onClick={() => setActiveTab("active")}
         >
           Active Rentals ({activeRentals.length})
         </button>
         <button
-          className={`${styles.tab} ${activeTab === 'history' ? styles.activeTab : ''}`}
-          onClick={() => setActiveTab('history')}
+          className={`${styles.tab} ${activeTab === "history" ? styles.activeTab : ""}`}
+          onClick={() => setActiveTab("history")}
         >
           History ({rentalHistory.length})
         </button>
       </div>
 
       {/* Content - Same as before */}
-      {activeTab === 'active' ? (
+      {activeTab === "active" ? (
         <div className={styles.rentalsGrid}>
           {activeRentals.length === 0 ? (
             <div className={styles.emptyState}>
@@ -159,7 +167,7 @@ export default function StudentProfilePage() {
               <p>Visit the library manager to rent books</p>
             </div>
           ) : (
-            activeRentals.map(rental => {
+            activeRentals.map((rental) => {
               const daysRemaining = getDaysRemaining(rental.dueDate);
               const isOverdue = daysRemaining < 0;
               const isDueSoon = daysRemaining <= 2 && daysRemaining >= 0;
@@ -168,7 +176,10 @@ export default function StudentProfilePage() {
                 <div key={rental._id} className={styles.rentalCard}>
                   <div className={styles.bookCover}>
                     {rental.bookId?.coverImage ? (
-                      <img src={rental.bookId.coverImage} alt={rental.bookId.title} />
+                      <img
+                        src={rental.bookId.coverImage}
+                        alt={rental.bookId.title}
+                      />
                     ) : (
                       <div className={styles.coverPlaceholder}>📚</div>
                     )}
@@ -176,28 +187,41 @@ export default function StudentProfilePage() {
 
                   <div className={styles.rentalInfo}>
                     <h3>{rental.bookSnapshot.title}</h3>
-                    <p className={styles.author}>{rental.bookId?.author || 'Unknown'}</p>
+                    <p className={styles.author}>
+                      {rental.bookId?.author || "Unknown"}
+                    </p>
 
                     <div className={styles.rentalDates}>
                       <div>
                         <span className={styles.label}>Issued:</span>
-                        <span>{new Date(rental.issuedAt).toLocaleDateString()}</span>
+                        <span className={styles.label}>
+                          {new Date(rental.issuedAt).toLocaleDateString(
+                            "en-GB",
+                          )}
+                        </span>
                       </div>
                       <div>
                         <span className={styles.label}>Due:</span>
-                        <span>{new Date(rental.dueDate).toLocaleDateString()}</span>
+                        <span className={styles.label}>
+                          {new Date(rental.dueDate).toLocaleDateString("en-GB")}
+                        </span>
                       </div>
                     </div>
 
-                    <div className={`${styles.statusBadge} ${
-                      isOverdue ? styles.overdue : isDueSoon ? styles.dueSoon : styles.safe
-                    }`}>
+                    <div
+                      className={`${styles.statusBadge} ${
+                        isOverdue
+                          ? styles.overdue
+                          : isDueSoon
+                            ? styles.dueSoon
+                            : styles.safe
+                      }`}
+                    >
                       {isOverdue
                         ? `⚠️ Overdue by ${Math.abs(daysRemaining)} days`
                         : isDueSoon
-                        ? `⏰ Due in ${daysRemaining} day${daysRemaining === 1 ? '' : 's'}`
-                        : `✓ ${daysRemaining} days remaining`
-                      }
+                          ? `⏰ Due in ${daysRemaining} day${daysRemaining === 1 ? "" : "s"}`
+                          : `✓ ${daysRemaining} days remaining`}
                     </div>
                   </div>
                 </div>
@@ -212,13 +236,17 @@ export default function StudentProfilePage() {
               <p>No rental history</p>
             </div>
           ) : (
-            rentalHistory.map(rental => (
+            rentalHistory.map((rental) => (
               <div key={rental._id} className={styles.historyItem}>
                 <div>
                   <strong>{rental.bookSnapshot.title}</strong>
                   <p className={styles.historyDates}>
-                    {new Date(rental.issuedAt).toLocaleDateString()} → {' '}
-                    {rental.actualReturnedAt ? new Date(rental.actualReturnedAt).toLocaleDateString() : 'Not returned'}
+                    {new Date(rental.issuedAt).toLocaleDateString("en-GB")} →{" "}
+                    {rental.actualReturnedAt
+                      ? new Date(rental.actualReturnedAt).toLocaleDateString(
+                          "en-GB",
+                        )
+                      : "Not returned"}
                   </p>
                 </div>
                 <span className={styles.historyStatus}>✓ Returned</span>

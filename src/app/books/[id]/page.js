@@ -1,10 +1,9 @@
-// src/app/books/[id]/page.js
+// src/app/books/[id]/page.js - View Only (No Rental)
 
 "use client";
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { saveUserSession } from "@/lib/utils/session";
 import styles from "./book.module.css";
 
 export default function BookDetailsPage() {
@@ -12,53 +11,16 @@ export default function BookDetailsPage() {
   const router = useRouter();
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showRentalForm, setShowRentalForm] = useState(false);
-  const [renting, setRenting] = useState(false);
   const [message, setMessage] = useState("");
 
-  const [formData, setFormData] = useState({
-    enrollmentNumber: "",
-    email: "",
-    phone: "",
-    agreedToTerms: false,
-  });
-
-  //   useEffect(() => {
-  //     fetchBookDetails();
-  //   }, [params.id]);
-
-  //   const fetchBookDetails = async () => {
-  //     try {
-  //       const response = await fetch(`/api/books/${params.id}`);
-  //       const data = await response.json();
-
-  //       if (data.success) {
-  //         setBook(data.data);
-  //       } else {
-  //         setMessage('❌ Book not found');
-  //       }
-  //     } catch (error) {
-  //       console.error('Failed to fetch book:', error);
-  //       setMessage('❌ Failed to load book details');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
   useEffect(() => {
-    console.log("📖 Book ID from URL:", params.id); // ADD THIS
     fetchBookDetails();
   }, [params.id]);
 
   const fetchBookDetails = async () => {
     try {
-      console.log("🔍 Fetching book:", params.id); // ADD THIS
-
       const response = await fetch(`/api/books/${params.id}`);
-      console.log("📡 Response status:", response.status); // ADD THIS
-
       const data = await response.json();
-      console.log("📦 Response data:", data); // ADD THIS
 
       if (data.success) {
         setBook(data.data);
@@ -70,45 +32,6 @@ export default function BookDetailsPage() {
       setMessage("❌ Failed to load book details");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleRent = async (e) => {
-    e.preventDefault();
-    setRenting(true);
-    setMessage("");
-
-    try {
-      const response = await fetch("/api/rentals/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bookId: params.id,
-          ...formData,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Save user session
-        saveUserSession(data.data.user);
-
-        setMessage(
-          "✅ Book rented successfully! Redirecting to your profile...",
-        );
-
-        // Redirect to profile after 2 seconds
-        setTimeout(() => {
-          router.push("/profile");
-        }, 2000);
-      } else {
-        setMessage(`❌ ${data.error}`);
-      }
-    } catch (error) {
-      setMessage("❌ Something went wrong. Please try again.");
-    } finally {
-      setRenting(false);
     }
   };
 
@@ -217,129 +140,25 @@ export default function BookDetailsPage() {
             </div>
           )}
 
-          {/* Rental Section */}
-          {isAvailable ? (
-            !showRentalForm ? (
-              <button
-                className={styles.rentButton}
-                onClick={() => setShowRentalForm(true)}
-              >
-                📚 Rent This Book
-              </button>
-            ) : (
-              <div className={styles.rentalForm}>
-                <h3>Rent "{book.title}"</h3>
-                <p className={styles.formNote}>
-                  Only IC Department students (enrollment code 17) can rent
-                  books
-                </p>
-
-                <form onSubmit={handleRent}>
-                  <div className={styles.formGroup}>
-                    <label>Enrollment Number *</label>
-                    <input
-                      type="text"
-                      value={formData.enrollmentNumber}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          enrollmentNumber: e.target.value,
-                        })
-                      }
-                      placeholder="e.g., 2417001123"
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Email *</label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      placeholder="your.email@gmail.com"
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label>Phone Number *</label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                      placeholder="9876543210"
-                      required
-                    />
-                  </div>
-
-                  <div className={styles.checkboxGroup}>
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      checked={formData.agreedToTerms}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          agreedToTerms: e.target.checked,
-                        })
-                      }
-                      required
-                    />
-                    <label htmlFor="terms">
-                      I agree to return the book within 7 days and follow
-                      library rules
-                    </label>
-                  </div>
-
-                  <div className={styles.formActions}>
-                    <button
-                      type="button"
-                      className={styles.cancelButton}
-                      onClick={() => setShowRentalForm(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className={styles.submitButton}
-                      disabled={renting}
-                    >
-                      {renting ? "Processing..." : "Confirm Rental"}
-                    </button>
-                  </div>
-                </form>
-
-                {message && (
-                  <div
-                    className={
-                      message.includes("✅")
-                        ? styles.successMsg
-                        : styles.errorMsg
-                    }
-                  >
-                    {message}
-                  </div>
-                )}
-              </div>
-            )
-          ) : (
-            <div className={styles.rentedInfo}>
-              <h3>Currently Rented</h3>
-              {book.currentRentalInfo && (
-                <p>
-                  Due back:{" "}
+          {/* Information Notice */}
+          <div className={styles.rentalNotice}>
+            <div className={styles.noticeIcon}>ℹ️</div>
+            <div className={styles.noticeContent}>
+              <h4>How to Rent This Book</h4>
+              <p>
+                Books can only be rented through the library manager. Please
+                visit the library with your enrollment number to rent this book.
+              </p>
+              {!isAvailable && book.currentRentalInfo && (
+                <p className={styles.dueInfo}>
+                  <strong>Expected return:</strong>{" "}
                   {new Date(book.currentRentalInfo.dueDate).toLocaleDateString(
-                    "en-IN",
+                    "en-GB",
                   )}
                 </p>
               )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

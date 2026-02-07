@@ -1,4 +1,4 @@
-// src/app/api/manager/return-book/route.js
+// src/app/api/manager/return-book/route.js - ONLY Manager Can Return
 
 import connectDB from '@/lib/mongodb';
 import Book from '@/lib/models/Book';
@@ -34,15 +34,16 @@ export async function POST(request) {
       }, { status: 404 });
     }
 
-    if (rental.status !== 'ACTIVE') {
+    // Only active rentals can be returned
+    if (rental.status !== 'ACTIVE' && rental.status !== 'OVERDUE') {
       await session.abortTransaction();
       return Response.json({
         success: false,
-        error: 'This rental is not active'
+        error: `Cannot return book with status: ${rental.status}`
       }, { status: 400 });
     }
 
-    // Update rental status
+    // Update rental status - ONLY MANUAL RETURN
     await Rental.updateOne(
       { _id: rentalId },
       {
@@ -52,7 +53,7 @@ export async function POST(request) {
       { session }
     );
 
-    // Mark book as available
+    // Mark book as available - THIS IS THE ONLY WAY
     await Book.updateOne(
       { _id: rental.bookId },
       {
@@ -72,6 +73,8 @@ export async function POST(request) {
     );
 
     await session.commitTransaction();
+
+    console.log(`✅ Manager returned book: ${rental.bookSnapshot.title} from ${rental.userSnapshot.enrollmentNumber}`);
 
     return Response.json({
       success: true,

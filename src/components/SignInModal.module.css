@@ -1,4 +1,4 @@
-/* src/components/SignInModal.module.css */
+/* src/components/SignInModal.module.css - Mobile First */
 
 .overlay {
   position: fixed;
@@ -9,18 +9,7 @@
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.2s;
-}
-
-.modal {
-  background: white;
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  animation: slideUp 0.3s;
+  padding: 16px;
 }
 
 @keyframes fadeIn {
@@ -28,20 +17,53 @@
   to { opacity: 1; }
 }
 
+.modal {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s;
+}
+
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Smooth scrolling */
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 10px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
 }
 
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
+  top: 12px;
+  right: 12px;
+  background: #f3f4f6;
   border: none;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
-  color: #999;
+  color: #6b7280;
   width: 32px;
   height: 32px;
   display: flex;
@@ -49,52 +71,53 @@
   justify-content: center;
   border-radius: 50%;
   transition: all 0.2s;
+  z-index: 10;
 }
 
-.closeButton:hover {
-  background: #f3f4f6;
-  color: #333;
+.closeButton:hover,
+.closeButton:active {
+  background: #e5e7eb;
+  color: #374151;
 }
 
 /* Mode Selection */
 .modeSelection h2 {
   margin: 0 0 24px 0;
   text-align: center;
-  font-size: 28px;
+  font-size: 24px;
   color: #1a1a1a;
 }
 
 .modeButtons {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 .modeButton {
   background: white;
   border: 2px solid #e5e7eb;
   border-radius: 12px;
-  padding: 32px 20px;
+  padding: 24px 16px;
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
 }
 
-.modeButton:hover {
+.modeButton:active {
+  transform: scale(0.98);
   border-color: #667eea;
   background: #f9fafb;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
 }
 
 .modeIcon {
-  font-size: 48px;
+  font-size: 40px;
   margin-bottom: 12px;
 }
 
 .modeButton h3 {
-  margin: 0 0 8px 0;
-  font-size: 18px;
+  margin: 0 0 6px 0;
+  font-size: 16px;
   color: #1a1a1a;
 }
 
@@ -120,95 +143,133 @@
   padding: 8px 0;
 }
 
-.backButton:hover {
+.backButton:active {
   text-decoration: underline;
 }
 
 .formContainer h2 {
-  margin: 0 0 24px 0;
-  font-size: 24px;
+  margin: 0 0 20px 0;
+  font-size: 22px;
   color: #1a1a1a;
 }
 
 .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .formGroup label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
-  font-size: 14px;
-  color: #333;
+  font-size: 13px;
+  color: #374151;
 }
 
-.formGroup input {
+.formGroup input,
+.formGroup select {
   width: 100%;
   padding: 12px;
   border: 2px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 14px;
   transition: border 0.2s;
+  background: white;
+  color: #374151;
 }
 
-.formGroup input:focus {
+.formGroup input:focus,
+.formGroup select:focus {
   outline: none;
   border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.formGroup input:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
 }
 
 .formGroup small {
   display: block;
   margin-top: 4px;
-  font-size: 12px;
-  color: #999;
+  font-size: 11px;
+  color: #6b7280;
 }
 
 .checkboxGroup {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin: 20px 0;
+  gap: 10px;
+  margin: 16px 0;
 }
 
 .checkboxGroup input[type="checkbox"] {
-  margin-top: 4px;
+  margin-top: 3px;
   width: 18px;
   height: 18px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .checkboxGroup label {
-  font-size: 14px;
+  font-size: 13px;
   color: #555;
+  line-height: 1.4;
   cursor: pointer;
 }
 
-.submitButton {
+.submitButton,
+.otpButton {
   width: 100%;
   padding: 14px;
   background: #667eea;
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  margin-top: 8px;
 }
 
-.submitButton:hover:not(:disabled) {
+.submitButton:hover:not(:disabled),
+.otpButton:hover:not(:disabled),
+.submitButton:active:not(:disabled),
+.otpButton:active:not(:disabled) {
   background: #5568d3;
+  transform: translateY(-1px);
 }
 
-.submitButton:disabled {
-  opacity: 0.6;
+.submitButton:disabled,
+.otpButton:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
+}
+
+.otpButton {
+  margin-bottom: 12px;
+}
+
+.resendButton {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  text-decoration: underline;
+}
+
+.resendButton:active {
+  color: #5568d3;
 }
 
 .switchMode {
   margin-top: 16px;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
 }
 
@@ -221,70 +282,89 @@
   text-decoration: underline;
 }
 
-.successMsg {
-  margin-top: 16px;
-  padding: 12px;
-  background: #d4edda;
-  color: #155724;
-  border-radius: 8px;
-  font-size: 14px;
+.switchMode button:active {
+  color: #5568d3;
 }
 
+.successMsg,
 .errorMsg {
   margin-top: 16px;
   padding: 12px;
-  background: #f8d7da;
-  color: #721c24;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .modal {
+.successMsg {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.errorMsg {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Tablet Breakpoint */
+@media (min-width: 640px) {
+  .overlay {
     padding: 24px;
   }
 
-  .modeButtons {
-    grid-template-columns: 1fr;
+  .modal {
+    padding: 32px;
   }
-}
-/* Add these styles to SignInModal.module.css */
 
-.otpButton {
-  width: 100%;
-  padding: 14px;
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 16px;
-}
+  .closeButton {
+    top: 16px;
+    right: 16px;
+  }
 
-.otpButton:hover:not(:disabled) {
-  background: #5568d3;
-}
+  .modeSelection h2 {
+    font-size: 28px;
+  }
 
-.otpButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+  .modeButtons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
 
-.resendButton {
-  background: none;
-  border: none;
-  color: #667eea;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 8px;
-  text-decoration: underline;
-}
+  .modeButton {
+    padding: 28px 20px;
+  }
 
-.resendButton:hover {
-  color: #5568d3;
+  .modeIcon {
+    font-size: 48px;
+  }
+
+  .modeButton h3 {
+    font-size: 18px;
+  }
+
+  .modeButton p {
+    font-size: 14px;
+  }
+
+  .formContainer h2 {
+    font-size: 24px;
+  }
+
+  .formGroup label {
+    font-size: 14px;
+  }
+
+  .formGroup input,
+  .formGroup select {
+    padding: 14px;
+    font-size: 15px;
+    color: #374151;
+  }
+
+  .submitButton,
+  .otpButton {
+    padding: 16px;
+    font-size: 16px;
+  }
 }

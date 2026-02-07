@@ -34,7 +34,6 @@ const RentalSchema = new mongoose.Schema(
       enum: [
         "ACTIVE",
         "RETURN_CONFIRMED_BY_USER",
-        "AUTO_RETURNED",
         "MANUALLY_RETURNED",
         "OVERDUE",
         "UNDER_INVESTIGATION",

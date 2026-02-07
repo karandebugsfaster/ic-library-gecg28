@@ -133,7 +133,7 @@ export default function ProfilePage() {
           {user.penaltyUntil && (
             <p>
               Penalty until:{" "}
-              {new Date(user.penaltyUntil).toLocaleDateString("en-IN")}
+              {new Date(user.penaltyUntil).toLocaleDateString("en-GB")}
             </p>
           )}
           {user.penaltyReason && <p>Reason: {user.penaltyReason}</p>}
@@ -150,7 +150,7 @@ export default function ProfilePage() {
               <div key={rental._id} className={styles.overdueItem}>
                 <strong>{rental.bookSnapshot.title}</strong>
                 <span>
-                  Due: {new Date(rental.dueDate).toLocaleDateString("en-IN")}
+                  Due: {new Date(rental.dueDate).toLocaleDateString("en-GB")}
                 </span>
               </div>
             ))}
@@ -228,14 +228,14 @@ export default function ProfilePage() {
                         <span className={styles.label}>Issued:</span>
                         <span className={styles.label}>
                           {new Date(rental.issuedAt).toLocaleDateString(
-                            "en-IN",
+                            "en-GB",
                           )}
                         </span>
                       </div>
                       <div>
                         <span className={styles.label}>Due:</span>
                         <span className={styles.label}>
-                          {new Date(rental.dueDate).toLocaleDateString("en-IN")}
+                          {new Date(rental.dueDate).toLocaleDateString("en-GB")}
                         </span>
                       </div>
                     </div>
@@ -279,9 +279,9 @@ export default function ProfilePage() {
                 </div>
                 <div className={styles.historyDates}>
                   <span>
-                    {new Date(rental.issuedAt).toLocaleDateString("en-IN")} →{" "}
+                    {new Date(rental.issuedAt).toLocaleDateString("en-GB")} →{" "}
                     {new Date(rental.actualReturnedAt).toLocaleDateString(
-                      "en-IN",
+                      "en-GB",
                     )}
                   </span>
                   <span className={styles.historyStatus}>

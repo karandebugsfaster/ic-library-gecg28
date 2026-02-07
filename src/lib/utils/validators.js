@@ -39,7 +39,7 @@ export function validateEnrollmentNumber(enrollmentNumber) {
   if (deptCode !== "117") {
     return {
       valid: false,
-      error: "Only IC department students (code 117) can register",
+      error: "No baccha, This is not for everyone...",
     };
   }
 

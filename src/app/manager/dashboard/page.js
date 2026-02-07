@@ -1,23 +1,23 @@
 // src/app/manager/dashboard/page.js
 
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getUserSession, clearUserSession } from '@/lib/utils/session';
-import styles from './dashboard.module.css';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getUserSession, clearUserSession } from "@/lib/utils/session";
+import styles from "./dashboard.module.css";
 
 export default function ManagerDashboard() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
-  const [activeView, setActiveView] = useState('overview');
+  const [activeView, setActiveView] = useState("overview");
 
   useEffect(() => {
     const session = getUserSession();
-    if (!session || session.role !== 'manager') {
-      alert('Unauthorized - Manager access only');
-      router.push('/');
+    if (!session || session.role !== "manager") {
+      alert("Unauthorized - Manager access only");
+      router.push("/");
       return;
     }
 
@@ -26,14 +26,14 @@ export default function ManagerDashboard() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('/api/manager/stats');
+      const response = await fetch("/api/manager/stats");
       const result = await response.json();
 
       if (result.success) {
         setData(result.data);
       }
     } catch (error) {
-      console.error('Failed to fetch stats:', error);
+      console.error("Failed to fetch stats:", error);
     } finally {
       setLoading(false);
     }
@@ -41,7 +41,7 @@ export default function ManagerDashboard() {
 
   const handleLogout = () => {
     clearUserSession();
-    router.push('/');
+    router.push("/");
   };
 
   const getDaysRemaining = (dueDate) => {
@@ -51,40 +51,40 @@ export default function ManagerDashboard() {
   };
 
   const handleReturnBook = async (rentalId) => {
-    if (!confirm('Mark this book as returned and make it available?')) {
+    if (!confirm("Mark this book as returned and make it available?")) {
       return;
     }
 
     try {
-      const response = await fetch('/api/manager/return-book', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rentalId })
+      const response = await fetch("/api/manager/return-book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rentalId }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        alert('✅ Book marked as returned!');
+        alert("✅ Book marked as returned!");
         fetchStats();
       } else {
         alert(`❌ ${data.error}`);
       }
     } catch (error) {
-      alert('❌ Failed to return book');
+      alert("❌ Failed to return book");
     }
   };
 
   // NEW: Send WhatsApp Messages
   const handleSendWhatsApp = (recipients, messageType) => {
     if (recipients.length === 0) {
-      alert('No recipients found');
+      alert("No recipients found");
       return;
     }
 
     // Generate message based on type
-    let message = '';
-    if (messageType === 'overdue') {
+    let message = "";
+    if (messageType === "overdue") {
       message = `Dear Student,
 
 Your library book is OVERDUE. Please return it immediately to avoid penalties.
@@ -92,7 +92,7 @@ Your library book is OVERDUE. Please return it immediately to avoid penalties.
 Contact the library for assistance.
 
 - IC Library Management`;
-    } else if (messageType === 'duesoon') {
+    } else if (messageType === "duesoon") {
       message = `Dear Student,
 
 Your library book is due TOMORROW. Please return it on time to avoid penalties.
@@ -101,19 +101,19 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
     }
 
     // Create WhatsApp links for each recipient
-    const phoneNumbers = recipients.map(r => r.phone).filter(Boolean);
-    
+    const phoneNumbers = recipients.map((r) => r.phone).filter(Boolean);
+
     if (phoneNumbers.length === 0) {
-      alert('❌ No phone numbers found for selected students');
+      alert("❌ No phone numbers found for selected students");
       return;
     }
 
     // Open WhatsApp for each number
     const encodedMessage = encodeURIComponent(message);
-    
+
     // Show confirmation
     const confirm = window.confirm(
-      `Send WhatsApp message to ${phoneNumbers.length} student(s)?\n\nMessage:\n${message}`
+      `Send WhatsApp message to ${phoneNumbers.length} student(s)?\n\nMessage:\n${message}`,
     );
 
     if (!confirm) return;
@@ -121,13 +121,15 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
     // Open WhatsApp links
     phoneNumbers.forEach((phone, index) => {
       setTimeout(() => {
-        const cleanPhone = phone.replace(/\D/g, ''); // Remove non-digits
+        const cleanPhone = phone.replace(/\D/g, ""); // Remove non-digits
         const whatsappUrl = `https://wa.me/91${cleanPhone}?text=${encodedMessage}`;
-        window.open(whatsappUrl, '_blank');
+        window.open(whatsappUrl, "_blank");
       }, index * 1000); // Delay 1 second between each
     });
 
-    alert(`✅ Opening WhatsApp for ${phoneNumbers.length} student(s). Please send the messages manually.`);
+    alert(
+      `✅ Opening WhatsApp for ${phoneNumbers.length} student(s). Please send the messages manually.`,
+    );
   };
 
   if (loading) {
@@ -143,7 +145,14 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
     return <div className={styles.error}>Failed to load dashboard</div>;
   }
 
-  const { stats, todayRentals, currentlyRented, overdueRentals, dueSoonRentals, rentalHistory } = data;
+  const {
+    stats,
+    todayRentals,
+    currentlyRented,
+    overdueRentals,
+    dueSoonRentals,
+    rentalHistory,
+  } = data;
 
   return (
     <div className={styles.container}>
@@ -154,13 +163,22 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
           <p className={styles.subtitle}>IC Library Management System</p>
         </div>
         <div className={styles.headerActions}>
-          <button onClick={() => router.push('/admin/import')} className={styles.importButton}>
+          <button
+            onClick={() => router.push("/admin/import")}
+            className={styles.importButton}
+          >
             📥 Import Books
           </button>
-          <button onClick={() => router.push('/manager/assign')} className={styles.assignButton}>
+          <button
+            onClick={() => router.push("/manager/assign")}
+            className={styles.assignButton}
+          >
             ➕ Assign Book
           </button>
-          <button onClick={() => router.push('/')} className={styles.backButton}>
+          <button
+            onClick={() => router.push("/")}
+            className={styles.backButton}
+          >
             ← Library
           </button>
           <button onClick={handleLogout} className={styles.logoutButton}>
@@ -171,7 +189,12 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
 
       {/* Stats Cards */}
       <div className={styles.statsGrid}>
-        <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+        <div
+          className={styles.statCard}
+          style={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          }}
+        >
           <div className={styles.statIcon}>📚</div>
           <div className={styles.statContent}>
             <h3>Total Books</h3>
@@ -183,7 +206,12 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
           </div>
         </div>
 
-        <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' }}>
+        <div
+          className={styles.statCard}
+          style={{
+            background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+          }}
+        >
           <div className={styles.statIcon}>👥</div>
           <div className={styles.statContent}>
             <h3>Total Users</h3>
@@ -195,7 +223,12 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
           </div>
         </div>
 
-        <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
+        <div
+          className={styles.statCard}
+          style={{
+            background: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+          }}
+        >
           <div className={styles.statIcon}>📖</div>
           <div className={styles.statContent}>
             <h3>Active Rentals</h3>
@@ -206,7 +239,12 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
           </div>
         </div>
 
-        <div className={styles.statCard} style={{ background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' }}>
+        <div
+          className={styles.statCard}
+          style={{
+            background: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+          }}
+        >
           <div className={styles.statIcon}>⚠️</div>
           <div className={styles.statContent}>
             <h3>Overdue Books</h3>
@@ -221,38 +259,38 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
       {/* Navigation Tabs */}
       <div className={styles.tabs}>
         <button
-          className={`${styles.tab} ${activeView === 'overview' ? styles.activeTab : ''}`}
-          onClick={() => setActiveView('overview')}
+          className={`${styles.tab} ${activeView === "overview" ? styles.activeTab : ""}`}
+          onClick={() => setActiveView("overview")}
         >
           Overview
         </button>
         <button
-          className={`${styles.tab} ${activeView === 'today' ? styles.activeTab : ''}`}
-          onClick={() => setActiveView('today')}
+          className={`${styles.tab} ${activeView === "today" ? styles.activeTab : ""}`}
+          onClick={() => setActiveView("today")}
         >
           Today's Rentals ({todayRentals.length})
         </button>
         <button
-          className={`${styles.tab} ${activeView === 'active' ? styles.activeTab : ''}`}
-          onClick={() => setActiveView('active')}
+          className={`${styles.tab} ${activeView === "active" ? styles.activeTab : ""}`}
+          onClick={() => setActiveView("active")}
         >
           Currently Rented ({currentlyRented.length})
         </button>
         <button
-          className={`${styles.tab} ${activeView === 'duesoon' ? styles.activeTab : ''}`}
-          onClick={() => setActiveView('duesoon')}
+          className={`${styles.tab} ${activeView === "duesoon" ? styles.activeTab : ""}`}
+          onClick={() => setActiveView("duesoon")}
         >
           Due Soon ({dueSoonRentals?.length || 0})
         </button>
         <button
-          className={`${styles.tab} ${activeView === 'overdue' ? styles.activeTab : ''}`}
-          onClick={() => setActiveView('overdue')}
+          className={`${styles.tab} ${activeView === "overdue" ? styles.activeTab : ""}`}
+          onClick={() => setActiveView("overdue")}
         >
           Overdue ({overdueRentals.length})
         </button>
         <button
-          className={`${styles.tab} ${activeView === 'history' ? styles.activeTab : ''}`}
-          onClick={() => setActiveView('history')}
+          className={`${styles.tab} ${activeView === "history" ? styles.activeTab : ""}`}
+          onClick={() => setActiveView("history")}
         >
           All History
         </button>
@@ -261,15 +299,26 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
       {/* Content Views */}
       <div className={styles.content}>
         {/* Overview - Same as before */}
-        {activeView === 'overview' && (
+        {activeView === "overview" && (
           <div className={styles.overview}>
             <div className={styles.overviewSection}>
               <h2>Quick Stats</h2>
               <div className={styles.quickStats}>
-                <div>Total Rentals (All Time): <strong>{stats.rentals.total}</strong></div>
-                <div>Available for Rent: <strong>{stats.books.available} books</strong></div>
-                <div>Registered Students: <strong>{stats.users.total}</strong></div>
-                <div>Due Soon (1 day): <strong>{dueSoonRentals?.length || 0} books</strong></div>
+                <div>
+                  Total Rentals (All Time):{" "}
+                  <strong>{stats.rentals.total}</strong>
+                </div>
+                <div>
+                  Available for Rent:{" "}
+                  <strong>{stats.books.available} books</strong>
+                </div>
+                <div>
+                  Registered Students: <strong>{stats.users.total}</strong>
+                </div>
+                <div>
+                  Due Soon (1 day):{" "}
+                  <strong>{dueSoonRentals?.length || 0} books</strong>
+                </div>
               </div>
             </div>
 
@@ -278,12 +327,16 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
               <div className={styles.overviewSection}>
                 <h2>⚠️ Urgent: Overdue Books</h2>
                 <div className={styles.overdueQuickList}>
-                  {overdueRentals.slice(0, 5).map(rental => (
+                  {overdueRentals.slice(0, 5).map((rental) => (
                     <div key={rental._id} className={styles.overdueQuickItem}>
                       <span>{rental.bookSnapshot.title}</span>
                       <span>{rental.userSnapshot.enrollmentNumber}</span>
                       <span className={styles.overdueDays}>
-                        {Math.ceil((new Date() - new Date(rental.dueDate)) / (1000 * 60 * 60 * 24))} days overdue
+                        {Math.ceil(
+                          (new Date() - new Date(rental.dueDate)) /
+                            (1000 * 60 * 60 * 24),
+                        )}{" "}
+                        days overdue
                       </span>
                     </div>
                   ))}
@@ -295,7 +348,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
               <div className={styles.overviewSection}>
                 <h2>⏰ Due Tomorrow</h2>
                 <div className={styles.dueSoonQuickList}>
-                  {dueSoonRentals.slice(0, 5).map(rental => (
+                  {dueSoonRentals.slice(0, 5).map((rental) => (
                     <div key={rental._id} className={styles.dueSoonQuickItem}>
                       <span>{rental.bookSnapshot.title}</span>
                       <span>{rental.userSnapshot.enrollmentNumber}</span>
@@ -309,7 +362,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
         )}
 
         {/* Today's Rentals - Same as before */}
-        {activeView === 'today' && (
+        {activeView === "today" && (
           <div className={styles.tableContainer}>
             <h2>Books Rented Today</h2>
             {todayRentals.length === 0 ? (
@@ -326,7 +379,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                   </tr>
                 </thead>
                 <tbody>
-                  {todayRentals.map(rental => (
+                  {todayRentals.map((rental) => (
                     <tr key={rental._id}>
                       <td>{new Date(rental.issuedAt).toLocaleTimeString()}</td>
                       <td>
@@ -336,7 +389,9 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                       </td>
                       <td>{rental.userSnapshot.enrollmentNumber}</td>
                       <td>{rental.userSnapshot.email}</td>
-                      <td>{new Date(rental.dueDate).toLocaleDateString()}</td>
+                      <td>
+                        {new Date(rental.dueDate).toLocaleDateString("en-GB")}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -346,7 +401,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
         )}
 
         {/* Currently Rented */}
-        {activeView === 'active' && (
+        {activeView === "active" && (
           <div className={styles.tableContainer}>
             <h2>Currently Rented Books</h2>
             <table className={styles.table}>
@@ -363,13 +418,22 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                 </tr>
               </thead>
               <tbody>
-                {currentlyRented.map(rental => {
+                {currentlyRented.map((rental) => {
                   const daysUntilDue = getDaysRemaining(rental.dueDate);
                   const isOverdue = daysUntilDue < 0;
                   const isDueSoon = daysUntilDue === 1;
 
                   return (
-                    <tr key={rental._id} className={isOverdue ? styles.overdueRow : isDueSoon ? styles.dueSoonRow : ''}>
+                    <tr
+                      key={rental._id}
+                      className={
+                        isOverdue
+                          ? styles.overdueRow
+                          : isDueSoon
+                            ? styles.dueSoonRow
+                            : ""
+                      }
+                    >
                       <td>
                         <strong>{rental.bookSnapshot.title}</strong>
                         <br />
@@ -378,18 +442,27 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                       <td>{rental.bookSnapshot.isbn}</td>
                       <td>{rental.userSnapshot.enrollmentNumber}</td>
                       <td>{rental.userSnapshot.email}</td>
-                      <td>{new Date(rental.issuedAt).toLocaleDateString()}</td>
-                      <td>{new Date(rental.dueDate).toLocaleDateString()}</td>
                       <td>
-                        <span className={`${styles.badge} ${
-                          isOverdue ? styles.badgeOverdue : isDueSoon ? styles.badgeDueSoon : styles.badgeOk
-                        }`}>
+                        {new Date(rental.issuedAt).toLocaleDateString("en-GB")}
+                      </td>
+                      <td>
+                        {new Date(rental.dueDate).toLocaleDateString("en-GB")}
+                      </td>
+                      <td>
+                        <span
+                          className={`${styles.badge} ${
+                            isOverdue
+                              ? styles.badgeOverdue
+                              : isDueSoon
+                                ? styles.badgeDueSoon
+                                : styles.badgeOk
+                          }`}
+                        >
                           {isOverdue
                             ? `${Math.abs(daysUntilDue)} days overdue`
                             : isDueSoon
-                            ? 'Due tomorrow'
-                            : `${daysUntilDue} days`
-                          }
+                              ? "Due tomorrow"
+                              : `${daysUntilDue} days`}
                         </span>
                       </td>
                       <td>
@@ -409,17 +482,22 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
         )}
 
         {/* NEW: Due Soon Section */}
-        {activeView === 'duesoon' && (
+        {activeView === "duesoon" && (
           <div className={styles.tableContainer}>
             <div className={styles.sectionHeader}>
               <h2>⏰ Books Due Tomorrow</h2>
               {dueSoonRentals && dueSoonRentals.length > 0 && (
                 <button
                   className={styles.whatsappButton}
-                  onClick={() => handleSendWhatsApp(dueSoonRentals.map(r => ({
-                    phone: r.userId?.phone,
-                    name: r.userSnapshot.enrollmentNumber
-                  })), 'duesoon')}
+                  onClick={() =>
+                    handleSendWhatsApp(
+                      dueSoonRentals.map((r) => ({
+                        phone: r.userId?.phone,
+                        name: r.userSnapshot.enrollmentNumber,
+                      })),
+                      "duesoon",
+                    )
+                  }
                 >
                   📱 Send WhatsApp to All
                 </button>
@@ -441,7 +519,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                   </tr>
                 </thead>
                 <tbody>
-                  {dueSoonRentals.map(rental => (
+                  {dueSoonRentals.map((rental) => (
                     <tr key={rental._id} className={styles.dueSoonRow}>
                       <td>
                         <strong>{rental.bookSnapshot.title}</strong>
@@ -450,16 +528,25 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                       </td>
                       <td>{rental.userSnapshot.enrollmentNumber}</td>
                       <td>{rental.userSnapshot.email}</td>
-                      <td>{rental.userId?.phone || 'N/A'}</td>
-                      <td>{new Date(rental.dueDate).toLocaleDateString()}</td>
+                      <td>{rental.userId?.phone || "N/A"}</td>
+                      <td>
+                        {new Date(rental.dueDate).toLocaleDateString("en-GB")}
+                      </td>
                       <td>
                         {rental.userId?.phone && (
                           <button
                             className={styles.whatsappButtonSmall}
-                            onClick={() => handleSendWhatsApp([{
-                              phone: rental.userId.phone,
-                              name: rental.userSnapshot.enrollmentNumber
-                            }], 'duesoon')}
+                            onClick={() =>
+                              handleSendWhatsApp(
+                                [
+                                  {
+                                    phone: rental.userId.phone,
+                                    name: rental.userSnapshot.enrollmentNumber,
+                                  },
+                                ],
+                                "duesoon",
+                              )
+                            }
                           >
                             📱 Send
                           </button>
@@ -474,17 +561,22 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
         )}
 
         {/* Overdue Section - Updated */}
-        {activeView === 'overdue' && (
+        {activeView === "overdue" && (
           <div className={styles.tableContainer}>
             <div className={styles.sectionHeader}>
               <h2>⚠️ Overdue Books - Action Required</h2>
               {overdueRentals.length > 0 && (
                 <button
                   className={styles.whatsappButton}
-                  onClick={() => handleSendWhatsApp(overdueRentals.map(r => ({
-                    phone: r.userId?.phone,
-                    name: r.userSnapshot.enrollmentNumber
-                  })), 'overdue')}
+                  onClick={() =>
+                    handleSendWhatsApp(
+                      overdueRentals.map((r) => ({
+                        phone: r.userId?.phone,
+                        name: r.userSnapshot.enrollmentNumber,
+                      })),
+                      "overdue",
+                    )
+                  }
                 >
                   📱 Send WhatsApp to All
                 </button>
@@ -507,9 +599,12 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                   </tr>
                 </thead>
                 <tbody>
-                  {overdueRentals.map(rental => {
-                    const daysOverdue = Math.ceil((new Date() - new Date(rental.dueDate)) / (1000 * 60 * 60 * 24));
-                    
+                  {overdueRentals.map((rental) => {
+                    const daysOverdue = Math.ceil(
+                      (new Date() - new Date(rental.dueDate)) /
+                        (1000 * 60 * 60 * 24),
+                    );
+
                     return (
                       <tr key={rental._id} className={styles.overdueRow}>
                         <td>
@@ -524,16 +619,26 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                         </td>
                         <td>{rental.userSnapshot.enrollmentNumber}</td>
                         <td>{rental.userSnapshot.email}</td>
-                        <td>{rental.userId?.phone || 'N/A'}</td>
-                        <td>{new Date(rental.dueDate).toLocaleDateString()}</td>
+                        <td>{rental.userId?.phone || "N/A"}</td>
+                        <td>
+                          {new Date(rental.dueDate).toLocaleDateString("en-GB")}
+                        </td>
                         <td>
                           {rental.userId?.phone && (
                             <button
                               className={styles.whatsappButtonSmall}
-                              onClick={() => handleSendWhatsApp([{
-                                phone: rental.userId.phone,
-                                name: rental.userSnapshot.enrollmentNumber
-                              }], 'overdue')}
+                              onClick={() =>
+                                handleSendWhatsApp(
+                                  [
+                                    {
+                                      phone: rental.userId.phone,
+                                      name: rental.userSnapshot
+                                        .enrollmentNumber,
+                                    },
+                                  ],
+                                  "overdue",
+                                )
+                              }
                             >
                               📱 Send
                             </button>
@@ -549,7 +654,7 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
         )}
 
         {/* History - Same as before */}
-        {activeView === 'history' && (
+        {activeView === "history" && (
           <div className={styles.tableContainer}>
             <h2>Complete Rental History</h2>
             <table className={styles.table}>
@@ -563,9 +668,11 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                 </tr>
               </thead>
               <tbody>
-                {rentalHistory.map(rental => (
+                {rentalHistory.map((rental) => (
                   <tr key={rental._id}>
-                    <td>{new Date(rental.issuedAt).toLocaleDateString()}</td>
+                    <td>
+                      {new Date(rental.issuedAt).toLocaleDateString("en-GB")}
+                    </td>
                     <td>
                       <strong>{rental.bookSnapshot.title}</strong>
                       <br />
@@ -573,22 +680,28 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                     </td>
                     <td>{rental.userSnapshot.enrollmentNumber}</td>
                     <td>
-                      <span className={`${styles.badge} ${
-                        rental.status === 'ACTIVE' ? styles.badgeActive :
-                        rental.status.includes('RETURNED') ? styles.badgeReturned :
-                        rental.status === 'OVERDUE' ? styles.badgeOverdue :
-                        styles.badgeNeutral
-                      }`}>
+                      <span
+                        className={`${styles.badge} ${
+                          rental.status === "ACTIVE"
+                            ? styles.badgeActive
+                            : rental.status.includes("RETURNED")
+                              ? styles.badgeReturned
+                              : rental.status === "OVERDUE"
+                                ? styles.badgeOverdue
+                                : styles.badgeNeutral
+                        }`}
+                      >
                         {rental.status}
                       </span>
                     </td>
                     <td>
                       {rental.actualReturnedAt
-                        ? new Date(rental.actualReturnedAt).toLocaleDateString()
-                        : rental.status === 'ACTIVE'
-                        ? `Due: ${new Date(rental.dueDate).toLocaleDateString()}`
-                        : '-'
-                      }
+                        ? new Date(rental.actualReturnedAt).toLocaleDateString(
+                            "en-GB",
+                          )
+                        : rental.status === "ACTIVE"
+                          ? `Due: ${new Date(rental.dueDate).toLocaleDateString("en-GB")}`
+                          : "-"}
                     </td>
                   </tr>
                 ))}

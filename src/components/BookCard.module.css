@@ -1,35 +1,35 @@
-/* src/components/BookCard.module.css */
+/* src/components/BookCard.module.css - Mobile Optimized */
 
 .card {
-  text-decoration: none;
-  color: inherit;
   display: block;
-}
-
-.cardInner {
-  position: relative;
   background: white;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.cardInner {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.cardInner:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
+/* Cover Container */
 .coverContainer {
   position: relative;
   width: 100%;
-  aspect-ratio: 3/4;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  aspect-ratio: 2/3;
   overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .cover {
@@ -50,107 +50,116 @@
 
 .statusBadge {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: white;
+  backdrop-filter: blur(8px);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Info Section */
 .info {
-  padding: 16px;
+  padding: 12px;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .title {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
   margin: 0;
+  line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: #1a1a1a;
 }
 
 .author {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .genres {
   display: flex;
-  gap: 6px;
   flex-wrap: wrap;
-  margin-top: 4px;
+  gap: 4px;
+  margin-top: 6px;
 }
 
 .genreTag {
-  font-size: 11px;
   padding: 3px 8px;
-  background: #f0f0f0;
-  border-radius: 12px;
-  color: #555;
-  font-weight: 500;
+  background: #e0e7ff;
+  color: #667eea;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
 }
 
 .year {
-  font-size: 12px;
+  font-size: 11px;
   color: #999;
-  margin: 0;
-  margin-top: auto;
+  margin: 4px 0 0 0;
 }
 
 .hoverOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(102, 126, 234, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.2s ease-in-out;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .viewDetails {
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+/* Tablet & Desktop Hover Effects */
+@media (min-width: 640px) {
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   }
-  to {
+
+  .card:hover .hoverOverlay {
     opacity: 1;
   }
+
+  .title {
+    font-size: 15px;
+  }
+
+  .author {
+    font-size: 13px;
+  }
+
+  .info {
+    padding: 16px;
+  }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+@media (min-width: 1024px) {
   .title {
-    font-size: 14px;
-  }
-  
-  .author {
-    font-size: 12px;
+    font-size: 16px;
   }
 }

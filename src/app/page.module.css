@@ -1,70 +1,150 @@
-/* src/app/page.module.css */
+/* src/app/page.module.css - Full Width on Large Screens */
 
 .container {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
-  padding: 24px;
+  background: #f9fafb;
 }
 
-.hero {
-  text-align: center;
-  padding: 48px 24px;
-  max-width: 800px;
-  margin: 0 auto;
+/* Top Navigation Bar - Mobile Optimized */
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.heroTitle {
-  font-size: 48px;
+.logo {
+  font-size: 18px;
   font-weight: 800;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0 0 16px 0;
+}
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.welcomeText {
+  display: none;
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.signInButton,
+.profileButton {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.signInButton {
+  background: #667eea;
+  color: white;
+  border: none;
+}
+
+.signInButton:hover,
+.signInButton:active {
+  background: #5568d3;
+  transform: scale(0.98);
+}
+
+.profileButton {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.profileButton:hover,
+.profileButton:active {
+  background: #f3f4f6;
+}
+
+/* Hero Section - Mobile First */
+.hero {
+  padding: 24px 16px;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.heroTitle {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  line-height: 1.2;
 }
 
 .heroSubtitle {
-  font-size: 18px;
-  color: #666;
-  margin: 0;
+  font-size: 14px;
+  margin: 0 0 8px 0;
+  opacity: 0.95;
 }
 
+.heroNote {
+  font-size: 13px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Filter Bar - Mobile Stack */
 .filterBar {
+  padding: 16px;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
-  gap: 16px;
-  max-width: 1200px;
-  margin: 0 auto 32px;
-  align-items: center;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .resultsInfo {
-  max-width: 1200px;
-  margin: 0 auto 24px;
-  color: #666;
-  font-size: 14px;
+  padding: 12px 16px;
+  background: #f3f4f6;
+  font-size: 13px;
+  color: #555;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
+/* Books Grid - Mobile First */
 .booksGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 16px;
 }
 
-.loadingContainer {
+/* Loading & Empty States */
+.loadingContainer,
+.emptyState {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 24px;
+  padding: 60px 20px;
+  text-align: center;
   color: #666;
 }
 
 .spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #e5e7eb;
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e5e7eb;
   border-top-color: #667eea;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -72,134 +152,129 @@
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.emptyState {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 24px;
-  color: #999;
-  text-align: center;
+  to { transform: rotate(360deg); }
 }
 
 .emptyState svg {
-  margin-bottom: 24px;
-  opacity: 0.3;
+  margin-bottom: 16px;
+  color: #d1d5db;
 }
 
 .emptyState h3 {
-  font-size: 20px;
-  color: #333;
   margin: 0 0 8px 0;
+  font-size: 18px;
+  color: #374151;
 }
 
 .emptyState p {
-  font-size: 14px;
   margin: 0;
+  font-size: 14px;
+  color: #9ca3af;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Tablet Breakpoint */
+@media (min-width: 640px) {
+  .topBar {
+    padding: 16px 24px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .welcomeText {
+    display: block;
+  }
+
+  .authButtons {
+    gap: 12px;
+  }
+
+  .signInButton,
+  .profileButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .hero {
+    padding: 40px 24px;
+  }
+
   .heroTitle {
-    font-size: 32px;
+    font-size: 36px;
   }
 
   .heroSubtitle {
     font-size: 16px;
   }
 
+  .heroNote {
+    font-size: 14px;
+  }
+
   .filterBar {
-    flex-direction: column;
+    flex-direction: row;
+    padding: 16px 24px;
   }
 
   .booksGrid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 24px;
   }
 }
 
-@media (max-width: 480px) {
+/* Desktop Breakpoint - NO MAX WIDTH */
+@media (min-width: 1024px) {
+  /* Remove max-width constraint for full width */
+  .topBar {
+    padding: 16px 40px;
+  }
+
+  .hero {
+    padding: 48px 40px;
+  }
+
+  .heroTitle {
+    font-size: 42px;
+  }
+
+  .filterBar {
+    padding: 20px 40px;
+  }
+
   .booksGrid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+    padding: 32px 40px;
+  }
+
+  .resultsInfo {
+    padding: 12px 40px;
   }
 }
-/* Add to existing page.module.css */
 
-.topBar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  margin: -24px -24px 24px -24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+/* Extra Large Screens - Even More Space */
+@media (min-width: 1440px) {
+  .topBar {
+    padding: 16px 60px;
+  }
 
-.logo {
-  font-size: 24px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+  .hero {
+    padding: 56px 60px;
+  }
 
-.authButtons {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+  .filterBar {
+    padding: 24px 60px;
+  }
 
-.welcomeText {
-  font-size: 14px;
-  color: #666;
-  font-weight: 600;
-}
+  .booksGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 28px;
+    padding: 40px 60px;
+  }
 
-.signInButton {
-  padding: 10px 24px;
-  background: #667eea;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.signInButton:hover {
-  background: #5568d3;
-  transform: translateY(-2px);
-}
-
-.profileButton {
-  padding: 10px 20px;
-  background: white;
-  color: #667eea;
-  border: 2px solid #667eea;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.profileButton:hover {
-  background: #667eea;
-  color: white;
-}
-
-.heroNote {
-  margin: 8px 0 0 0;
-  font-size: 14px;
-  color: #666;
-  font-weight: 500;
+  .resultsInfo {
+    padding: 12px 60px;
+  }
 }
