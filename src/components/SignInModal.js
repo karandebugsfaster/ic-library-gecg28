@@ -430,6 +430,7 @@ export default function SignInModal({ onClose, onSuccess }) {
                       placeholder="your.email@gmail.com"
                       required
                     />
+                    <small>Make sure to use a valid Gmail address. An OTP will be sent to this email for sign-in verification.</small>
                   </div>
 
                   <div className={styles.formGroup}>

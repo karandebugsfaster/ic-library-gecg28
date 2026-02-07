@@ -350,8 +350,8 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                 <div className={styles.dueSoonQuickList}>
                   {dueSoonRentals.slice(0, 5).map((rental) => (
                     <div key={rental._id} className={styles.dueSoonQuickItem}>
-                      <span>{rental.bookSnapshot.title}</span>
-                      <span>{rental.userSnapshot.enrollmentNumber}</span>
+                      <span className={styles.text}>{rental.bookSnapshot.title}</span>
+                      <span className={styles.text}>{rental.userSnapshot.enrollmentNumber}</span>
                       <span className={styles.dueSoonLabel}>Due tomorrow</span>
                     </div>
                   ))}
