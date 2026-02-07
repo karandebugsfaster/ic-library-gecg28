@@ -432,3 +432,84 @@
   background: #059669;
   transform: translateY(-2px);
 }
+/* Add to dashboard.module.css */
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #1a1a1a;
+}
+
+.whatsappButton {
+  padding: 12px 24px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.whatsappButton:hover {
+  background: #1fb855;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsappButtonSmall {
+  padding: 6px 12px;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.whatsappButtonSmall:hover {
+  background: #1fb855;
+}
+
+.dueSoonRow {
+  background: #fff9e6;
+}
+
+.dueSoonRow:hover {
+  background: #fff3cd;
+}
+
+.dueSoonQuickList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dueSoonQuickItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #fff3cd;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+}
+
+.dueSoonLabel {
+  color: #856404;
+  font-weight: 700;
+  font-size: 14px;
+}

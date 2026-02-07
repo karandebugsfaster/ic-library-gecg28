@@ -249,3 +249,42 @@
     grid-template-columns: 1fr;
   }
 }
+/* Add these styles to SignInModal.module.css */
+
+.otpButton {
+  width: 100%;
+  padding: 14px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 16px;
+}
+
+.otpButton:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.otpButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.resendButton {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  text-decoration: underline;
+}
+
+.resendButton:hover {
+  color: #5568d3;
+}

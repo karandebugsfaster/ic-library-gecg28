@@ -13,8 +13,10 @@ export async function GET() {
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
+    const dayAfterTomorrow = new Date(tomorrow);
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 1);
 
-    // Get all stats in parallel
+    // Get all stats
     const [
       totalBooks,
       availableBooks,
@@ -25,6 +27,7 @@ export async function GET() {
       todayRentals,
       activeRentals,
       overdueRentals,
+      dueSoonRentals, // NEW
       totalRentalsCount
     ] = await Promise.all([
       Book.countDocuments(),
@@ -41,10 +44,15 @@ export async function GET() {
         status: 'ACTIVE',
         dueDate: { $lt: new Date() }
       }),
+      // NEW: Due tomorrow (within 24-48 hours)
+      Rental.countDocuments({
+        status: 'ACTIVE',
+        dueDate: { $gte: tomorrow, $lt: dayAfterTomorrow }
+      }),
       Rental.countDocuments()
     ]);
 
-    // Get today's rentals with details
+    // Today's rentals
     const todayRentalsList = await Rental.find({
       issuedAt: { $gte: today, $lt: tomorrow }
     })
@@ -53,14 +61,14 @@ export async function GET() {
       .sort({ issuedAt: -1 })
       .lean();
 
-    // Get currently rented books
+    // Currently rented
     const currentlyRented = await Rental.find({ status: 'ACTIVE' })
-      .populate('userId', 'enrollmentNumber email')
+      .populate('userId', 'enrollmentNumber email phone')
       .populate('bookId', 'title author isbn')
       .sort({ dueDate: 1 })
       .lean();
 
-    // Get overdue rentals
+    // Overdue
     const overdueList = await Rental.find({
       status: 'ACTIVE',
       dueDate: { $lt: new Date() }
@@ -70,7 +78,17 @@ export async function GET() {
       .sort({ dueDate: 1 })
       .lean();
 
-    // Get all rental history
+    // NEW: Due soon (tomorrow)
+    const dueSoonList = await Rental.find({
+      status: 'ACTIVE',
+      dueDate: { $gte: tomorrow, $lt: dayAfterTomorrow }
+    })
+      .populate('userId', 'enrollmentNumber email phone')
+      .populate('bookId', 'title author isbn')
+      .sort({ dueDate: 1 })
+      .lean();
+
+    // Rental history
     const rentalHistory = await Rental.find({})
       .populate('userId', 'enrollmentNumber')
       .populate('bookId', 'title author')
@@ -96,12 +114,14 @@ export async function GET() {
             today: todayRentals,
             active: activeRentals,
             overdue: overdueRentals,
+            dueSoon: dueSoonRentals, // NEW
             total: totalRentalsCount
           }
         },
         todayRentals: todayRentalsList,
         currentlyRented,
         overdueRentals: overdueList,
+        dueSoonRentals: dueSoonList, // NEW
         rentalHistory
       }
     });
