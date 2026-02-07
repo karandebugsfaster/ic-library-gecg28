@@ -1,5 +1,3 @@
-// src/app/profile/page.js
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -11,19 +9,24 @@ export default function ProfilePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
-  const [activeTab, setActiveTab] = useState("active"); // 'active', 'history'
+  const [activeTab, setActiveTab] = useState("active");
 
   useEffect(() => {
     const session = getUserSession();
-    if (!session) {
+    console.log("Session:", session);
+
+    if (!session || !session.id) {
+      console.log("No session found, redirecting to home");
       router.push("/");
       return;
     }
+
     fetchProfile(session.id);
-  }, []);
+  }, [router]);
 
   const fetchProfile = async (userId) => {
     try {
+      console.log("Fetching profile for userId:", userId);
       const response = await fetch("/api/users/profile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -31,14 +34,19 @@ export default function ProfilePage() {
       });
 
       const data = await response.json();
+      console.log("Profile response:", data);
 
       if (data.success) {
         setProfile(data.data);
       } else {
-        alert("Failed to load profile");
+        console.error("Profile fetch failed:", data.error);
+        alert("Failed to load profile: " + data.error);
+        router.push("/");
       }
     } catch (error) {
       console.error("Failed to fetch profile:", error);
+      alert("Error loading profile");
+      router.push("/");
     } finally {
       setLoading(false);
     }
@@ -50,15 +58,12 @@ export default function ProfilePage() {
   };
 
   const getDaysRemaining = (dueDate) => {
-    // Get today's date at midnight in local timezone
     const now = new Date();
     now.setHours(0, 0, 0, 0);
 
-    // Convert dueDate to Date object and midnight in local timezone
     const due = new Date(dueDate);
     due.setHours(0, 0, 0, 0);
 
-    // Calculate difference in days
     const diff = Math.ceil((due - now) / (1000 * 60 * 60 * 24));
     return diff;
   };

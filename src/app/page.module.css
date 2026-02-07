@@ -128,3 +128,78 @@
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
 }
+/* Add to existing page.module.css */
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin: -24px -24px 24px -24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.welcomeText {
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+}
+
+.signInButton {
+  padding: 10px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signInButton:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+}
+
+.profileButton {
+  padding: 10px 20px;
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.profileButton:hover {
+  background: #667eea;
+  color: white;
+}
+
+.heroNote {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
