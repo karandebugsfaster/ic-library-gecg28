@@ -90,7 +90,7 @@ export default function StudentProfilePage() {
       {/* Profile Card */}
       <div className={styles.profileCard}>
         <div className={styles.avatar}>
-          {user.enrollmentNumber.substring(0, 2)}
+          {user.enrollmentNumber.substring(10, 12)}
         </div>
         <div className={styles.userInfo}>
           <h1>{user.enrollmentNumber}</h1>

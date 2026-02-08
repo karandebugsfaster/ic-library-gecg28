@@ -437,9 +437,100 @@
 
 /* Keep all other existing styles below... */
 /* Add to page.module.css */
+/* src/app/page.module.css - Fixed Navbar Layout */
 
-/* Mobile Menu Button */
-.mobileMenuButton {
+/* ========== TOP BAR ========== */
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Auth Buttons Container */
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.welcomeText {
+  display: none;
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.signInButton,
+.profileButton,
+.aboutButton {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.signInButton {
+  background: #667eea;
+  color: white;
+  border: none;
+}
+
+.signInButton:hover,
+.signInButton:active {
+  background: #5568d3;
+  transform: scale(0.98);
+}
+
+.profileButton {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.profileButton:hover,
+.profileButton:active {
+  background: #f3f4f6;
+}
+
+/* Desktop About Button */
+.aboutButton {
+  background: white;
+  color: #667eea;
+  border: 2px solid #e5e7eb;
+  display: none; /* Hidden on mobile */
+}
+
+.aboutButton:hover {
+  border-color: #667eea;
+  background: #f9fafb;
+  transform: translateY(-2px);
+}
+
+.aboutButton:active {
+  transform: scale(0.98);
+}
+
+/* Hamburger Button (Mobile Only) */
+.hamburgerButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -451,32 +542,89 @@
   transition: all 0.2s;
 }
 
-.mobileMenuButton:active {
+.hamburgerButton:active {
   transform: scale(0.95);
 }
 
-/* Mobile Menu Dropdown */
-.mobileMenu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  animation: slideDown 0.2s ease-out;
-  z-index: 99;
+/* ========== MOBILE MENU SIDEBAR ========== */
+.mobileMenuOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  animation: fadeIn 0.3s;
 }
 
-@keyframes slideDown {
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mobileMenuSidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 80vw;
+  background: white;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideInRight {
   from {
-    opacity: 0;
-    transform: translateY(-10px);
+    transform: translateX(100%);
   }
   to {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
+}
+
+.mobileMenuHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.mobileMenuHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.closeButton {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeButton:hover,
+.closeButton:active {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.mobileMenuContent {
+  flex: 1;
+  padding: 8px 0;
+  overflow-y: auto;
 }
 
 .mobileMenuItem {
@@ -489,17 +637,69 @@
   font-weight: 600;
   color: #374151;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   border-bottom: 1px solid #f3f4f6;
 }
 
+.mobileMenuItem:hover,
 .mobileMenuItem:active {
-  background: #f9fafb;
+  background: linear-gradient(90deg, #ede9fe 0%, transparent 100%);
+  color: #667eea;
 }
 
-/* Hide mobile menu button on desktop */
+.mobileMenuItem svg {
+  flex-shrink: 0;
+  color: #9ca3af;
+}
+
+.mobileMenuItem:hover svg,
+.mobileMenuItem:active svg {
+  color: #667eea;
+}
+
+/* ========== RESPONSIVE ========== */
+
+/* Tablet Breakpoint */
 @media (min-width: 640px) {
-  .mobileMenuButton {
+  .topBar {
+    padding: 16px 24px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .welcomeText {
+    display: block;
+  }
+
+  .authButtons {
+    gap: 12px;
+  }
+
+  .signInButton,
+  .profileButton,
+  .aboutButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Show About button on desktop, hide hamburger */
+  .aboutButton {
+    display: block;
+  }
+
+  .hamburgerButton {
     display: none;
+  }
+}
+
+/* Desktop Breakpoint */
+@media (min-width: 1024px) {
+  .aboutButton {
+    padding: 10px 24px;
   }
 }

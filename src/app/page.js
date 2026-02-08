@@ -1,35 +1,35 @@
-// src/app/page.js - Updated with About Button
+// src/app/page.js - Fixed Navbar Layout
 
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import BookCard from "@/components/BookCard";
-import SearchBar from "@/components/SearchBar";
-import GenreFilter from "@/components/GenreFilter";
-import Pagination from "@/components/Pagination";
-import SignInModal from "@/components/SignInModal";
-import AboutDeveloper from "@/components/AboutDeveloper";
-import { getUserSession } from "@/lib/utils/session";
-import styles from "./page.module.css";
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+import BookCard from '@/components/BookCard';
+import SearchBar from '@/components/SearchBar';
+import GenreFilter from '@/components/GenreFilter';
+import Pagination from '@/components/Pagination';
+import SignInModal from '@/components/SignInModal';
+import AboutDeveloper from '@/components/AboutDeveloper';
+import { getUserSession } from '@/lib/utils/session';
+import styles from './page.module.css';
 
 export default function HomePage() {
   const router = useRouter();
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [userSession, setUserSession] = useState(null);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
-    totalBooks: 0,
+    totalBooks: 0
   });
 
   const [filters, setFilters] = useState({
-    search: "",
-    genre: "all",
-    page: 1,
+    search: '',
+    genre: 'all',
+    page: 1
   });
 
   useEffect(() => {
@@ -40,15 +40,15 @@ export default function HomePage() {
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
-
+      
       try {
         const params = new URLSearchParams({
           page: filters.page.toString(),
-          limit: "20",
+          limit: '20'
         });
 
-        if (filters.search) params.append("search", filters.search);
-        if (filters.genre !== "all") params.append("genre", filters.genre);
+        if (filters.search) params.append('search', filters.search);
+        if (filters.genre !== 'all') params.append('genre', filters.genre);
 
         const response = await fetch(`/api/books?${params}`);
         const data = await response.json();
@@ -58,7 +58,7 @@ export default function HomePage() {
           setPagination(data.data.pagination);
         }
       } catch (error) {
-        console.error("Failed to fetch books:", error);
+        console.error('Failed to fetch books:', error);
       } finally {
         setLoading(false);
       }
@@ -68,107 +68,115 @@ export default function HomePage() {
   }, [filters.search, filters.genre, filters.page]);
 
   const handleSearch = useCallback((query) => {
-    setFilters((prev) => ({ ...prev, search: query, page: 1 }));
+    setFilters(prev => ({ ...prev, search: query, page: 1 }));
   }, []);
 
   const handleGenreChange = useCallback((genre) => {
-    setFilters((prev) => ({ ...prev, genre, page: 1 }));
+    setFilters(prev => ({ ...prev, genre, page: 1 }));
   }, []);
 
   const handlePageChange = useCallback((page) => {
-    setFilters((prev) => ({ ...prev, page }));
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setFilters(prev => ({ ...prev, page }));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   return (
     <div className={styles.container}>
-      {/* ========== UPDATED: Header with About Button ========== */}
+      {/* ========== FIXED: Header with About Button on Right ========== */}
       <div className={styles.topBar}>
         <div className={styles.logo}>IC Library</div>
-
-        {/* Desktop Nav Links */}
-        <div className={styles.navLinks}>
-          <button
-            onClick={() => router.push("/about")}
-            className={styles.aboutButton}
-          >
-            About
-          </button>
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className={styles.mobileMenuButton}
-          onClick={() => setShowMobileMenu(!showMobileMenu)}
-          aria-label="Menu"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            {showMobileMenu ? (
-              <path d="M18 6L6 18M6 6l12 12" />
-            ) : (
-              <>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </>
-            )}
-          </svg>
-        </button>
-
+        
         <div className={styles.authButtons}>
           {userSession ? (
             <>
               <span className={styles.welcomeText}>
-                {userSession.role === "manager" ? "👔 Manager" : "👤"}{" "}
-                {userSession.enrollmentNumber || userSession.username}
+                {userSession.role === 'manager' ? '👔 Manager' : '👤'} {userSession.enrollmentNumber || userSession.username}
               </span>
-              <button
+              <button 
                 onClick={() => {
-                  if (userSession.role === "manager") {
-                    router.push("/manager/dashboard");
+                  if (userSession.role === 'manager') {
+                    router.push('/manager/dashboard');
                   } else {
-                    router.push("/student/profile");
+                    router.push('/student/profile');
                   }
                 }}
                 className={styles.profileButton}
               >
-                {userSession.role === "manager" ? "Dashboard" : "My Profile"}
+                {userSession.role === 'manager' ? 'Dashboard' : 'My Profile'}
               </button>
             </>
           ) : (
-            <button
-              onClick={() => setShowSignIn(true)}
-              className={styles.signInButton}
-            >
+            <button onClick={() => setShowSignIn(true)} className={styles.signInButton}>
               Sign In
             </button>
           )}
-          {/* Mobile Menu Dropdown */}
-          {showMobileMenu && (
-            <div className={styles.mobileMenu}>
-              <button
+
+          {/* Desktop About Button */}
+          <button 
+            onClick={() => router.push('/about')} 
+            className={styles.aboutButton}
+          >
+            About
+          </button>
+
+          {/* Mobile Hamburger Menu */}
+          <button 
+            className={styles.hamburgerButton}
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="Menu"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Sidebar (Slides from Right) */}
+      {showMobileMenu && (
+        <>
+          <div 
+            className={styles.mobileMenuOverlay} 
+            onClick={() => setShowMobileMenu(false)}
+          ></div>
+          <div className={styles.mobileMenuSidebar}>
+            <div className={styles.mobileMenuHeader}>
+              <h3>Menu</h3>
+              <button 
+                onClick={() => setShowMobileMenu(false)}
+                className={styles.closeButton}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className={styles.mobileMenuContent}>
+              <button 
                 onClick={() => {
-                  router.push("/about");
+                  router.push('/about');
                   setShowMobileMenu(false);
-                }}
+                }} 
                 className={styles.mobileMenuItem}
               >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
                 About Developer
               </button>
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
+
       {/* Hero Section */}
       <header className={styles.hero}>
-        <h1 className={styles.heroTitle}>IC Department Library</h1>
+        <h1 className={styles.heroTitle}>
+          IC Department Library
+        </h1>
         <p className={styles.heroSubtitle}>
           Browse our collection of {pagination.totalBooks}+ books
         </p>
@@ -184,11 +192,11 @@ export default function HomePage() {
       </div>
 
       {/* Results Info */}
-      {filters.search || filters.genre !== "all" ? (
+      {filters.search || filters.genre !== 'all' ? (
         <div className={styles.resultsInfo}>
           Showing {books.length} of {pagination.totalBooks} books
           {filters.search && ` for "${filters.search}"`}
-          {filters.genre !== "all" && ` in ${filters.genre}`}
+          {filters.genre !== 'all' && ` in ${filters.genre}`}
         </div>
       ) : null}
 
@@ -200,13 +208,7 @@ export default function HomePage() {
         </div>
       ) : books.length === 0 ? (
         <div className={styles.emptyState}>
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-          >
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           </svg>
@@ -216,12 +218,12 @@ export default function HomePage() {
       ) : (
         <>
           <div className={styles.booksGrid}>
-            {books.map((book) => (
+            {books.map(book => (
               <BookCard key={book._id} book={book} viewOnly={true} />
             ))}
           </div>
 
-          <Pagination
+          <Pagination 
             currentPage={pagination.currentPage}
             totalPages={pagination.totalPages}
             onPageChange={handlePageChange}
@@ -231,7 +233,7 @@ export default function HomePage() {
 
       {/* Sign In Modal */}
       {showSignIn && (
-        <SignInModal
+        <SignInModal 
           onClose={() => setShowSignIn(false)}
           onSuccess={(session) => {
             setUserSession(session);
@@ -240,8 +242,9 @@ export default function HomePage() {
         />
       )}
 
-      {/* About Developer Section (Keep at bottom) */}
+      {/* About Developer Section */}
       <AboutDeveloper />
+
     </div>
   );
 }
