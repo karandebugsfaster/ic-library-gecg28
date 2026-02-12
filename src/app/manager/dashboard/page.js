@@ -329,8 +329,8 @@ Your library book is due TOMORROW. Please return it on time to avoid penalties.
                 <div className={styles.overdueQuickList}>
                   {overdueRentals.slice(0, 5).map((rental) => (
                     <div key={rental._id} className={styles.overdueQuickItem}>
-                      <span>{rental.bookSnapshot.title}</span>
-                      <span>{rental.userSnapshot.enrollmentNumber}</span>
+                      <span className={styles.text1}>{rental.bookSnapshot.title}</span>
+                      <span className={styles.text1}>{rental.userSnapshot.enrollmentNumber}</span>
                       <span className={styles.overdueDays}>
                         {Math.ceil(
                           (new Date() - new Date(rental.dueDate)) /

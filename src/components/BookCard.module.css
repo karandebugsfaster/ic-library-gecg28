@@ -163,3 +163,151 @@
     font-size: 16px;
   }
 }
+/* Add these styles to your existing book.module.css */
+
+/* ========== ERROR STATE ========== */
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.error svg {
+  color: #ef4444;
+  margin-bottom: 24px;
+}
+
+.error h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+}
+
+.error p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 32px 0;
+  max-width: 500px;
+}
+
+.errorActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.retryButton {
+  padding: 12px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.retryButton:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+}
+
+.retryButton:active {
+  transform: scale(0.98);
+}
+
+/* ========== RENTAL NOTICE ========== */
+.rentalNotice {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%);
+  border-radius: 12px;
+  border: 2px solid #c7d2fe;
+  margin-top: 24px;
+}
+
+.rentalNotice svg {
+  flex-shrink: 0;
+  color: #667eea;
+  margin-top: 2px;
+}
+
+.rentalNotice h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.rentalNotice p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+/* ========== RENTED INFO ========== */
+.rentedInfo {
+  margin-top: 24px;
+  padding: 20px;
+  background: #fff3cd;
+  border-radius: 12px;
+  border: 2px solid #ffeaa7;
+}
+
+.rentedInfo h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #856404;
+}
+
+.rentedInfo p {
+  margin: 0;
+  color: #856404;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .error h2 {
+    font-size: 24px;
+  }
+
+  .error p {
+    font-size: 14px;
+  }
+
+  .errorActions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .retryButton,
+  .backButton {
+    width: 100%;
+  }
+
+  .rentalNotice {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .rentalNotice h4 {
+    font-size: 15px;
+  }
+
+  .rentalNotice p {
+    font-size: 13px;
+  }
+}

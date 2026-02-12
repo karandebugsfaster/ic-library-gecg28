@@ -33,10 +33,10 @@ export function validateEnrollmentNumber(enrollmentNumber) {
   }
 
   // Extract department code (positions 2-3, zero-indexed)
-  const deptCode = cleaned.substring(6, 9);
+  const deptCode = cleaned.substring(7, 9);
 
-  // Must be "117" for IC department
-  if (deptCode !== "117") {
+  // Must be "17" for IC department
+  if (deptCode !== "17") {
     return {
       valid: false,
       error: "No baccha, This is not for everyone...",
