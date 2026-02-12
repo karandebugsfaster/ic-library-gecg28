@@ -175,12 +175,12 @@ export default function BookDetailsPage() {
 
           {/* Information Notice */}
           <div className={styles.rentalNotice}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="12" y1="16" x2="12" y2="12"></line>
               <line x1="12" y1="8" x2="12.01" y2="8"></line>
             </svg>
-            <div>
+            <div className={styles.text}>
               <h4>Want to rent this book?</h4>
               <p>Please visit the library manager to rent books. Self-service rental is not available.</p>
             </div>
