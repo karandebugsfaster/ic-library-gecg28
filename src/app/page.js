@@ -1,15 +1,17 @@
-// src/app/page.js - Fixed Navbar Layout
+// src/app/page.js - Updated with Logo in Navbar
 
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import BookCard from '@/components/BookCard';
 import SearchBar from '@/components/SearchBar';
 import GenreFilter from '@/components/GenreFilter';
 import Pagination from '@/components/Pagination';
 import SignInModal from '@/components/SignInModal';
 import AboutDeveloper from '@/components/AboutDeveloper';
+import FloatingChatButton from '@/components/FloatingChatButton';
 import { getUserSession } from '@/lib/utils/session';
 import styles from './page.module.css';
 
@@ -82,9 +84,20 @@ export default function HomePage() {
 
   return (
     <div className={styles.container}>
-      {/* ========== FIXED: Header with About Button on Right ========== */}
+      {/* ========== UPDATED: Header with Logo ========== */}
       <div className={styles.topBar}>
-        <div className={styles.logo}>IC Library</div>
+        <div className={styles.logoSection}>
+          <div className={styles.logoImage}>
+            <Image
+              src="/images/img-2.png"
+              alt="IC Library Logo"
+              width={80}
+              height={80}
+              priority
+            />
+          </div>
+          <span className={styles.logo}>IC Library</span>
+        </div>
         
         <div className={styles.authButtons}>
           {userSession ? (
@@ -134,7 +147,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Mobile Menu Sidebar (Slides from Right) */}
+      {/* Mobile Menu Sidebar */}
       {showMobileMenu && (
         <>
           <div 
@@ -245,6 +258,8 @@ export default function HomePage() {
       {/* About Developer Section */}
       <AboutDeveloper />
 
+      {/* Floating AI Chat Button */}
+      <FloatingChatButton />
     </div>
   );
 }

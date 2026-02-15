@@ -703,3 +703,194 @@
     padding: 10px 24px;
   }
 }
+/* Add/Update these styles in src/app/page.module.css */
+
+/* ========== TOP BAR WITH LOGO ========== */
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoImage {
+  width: 70px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.logoImage:hover {
+  transform: scale(1.05);
+}
+
+.logoImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Auth Buttons Container */
+.authButtons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.welcomeText {
+  display: none;
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.signInButton,
+.profileButton,
+.aboutButton {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.signInButton {
+  background: #667eea;
+  color: white;
+  border: none;
+}
+
+.signInButton:hover,
+.signInButton:active {
+  background: #5568d3;
+  transform: scale(0.98);
+}
+
+.profileButton {
+  background: white;
+  color: #667eea;
+  border: 2px solid #667eea;
+}
+
+.profileButton:hover,
+.profileButton:active {
+  background: #f3f4f6;
+}
+
+/* Desktop About Button */
+.aboutButton {
+  background: white;
+  color: #667eea;
+  border: 2px solid #e5e7eb;
+  display: none; /* Hidden on mobile */
+}
+
+.aboutButton:hover {
+  border-color: #667eea;
+  background: #f9fafb;
+  transform: translateY(-2px);
+}
+
+.aboutButton:active {
+  transform: scale(0.98);
+}
+
+/* Hamburger Button (Mobile Only) */
+.hamburgerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hamburgerButton:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Logo */
+@media (min-width: 640px) {
+  .topBar {
+    padding: 16px 24px;
+  }
+
+  .logoSection {
+    gap: 14px;
+  }
+
+  .logoImage {
+    width: 48px;
+    height: 48px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .welcomeText {
+    display: block;
+  }
+
+  .authButtons {
+    gap: 12px;
+  }
+
+  .signInButton,
+  .profileButton,
+  .aboutButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Show About button on desktop, hide hamburger */
+  .aboutButton {
+    display: block;
+  }
+
+  .hamburgerButton {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .logoImage {
+    width: 100px;
+    height: 60px;
+  }
+
+  .aboutButton {
+    padding: 10px 24px;
+  }
+}
+
+/* Keep all other existing styles below... */

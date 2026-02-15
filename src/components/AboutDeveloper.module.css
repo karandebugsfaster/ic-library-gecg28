@@ -1,4 +1,4 @@
-/* src/components/AboutDeveloper.module.css - Professional Developer Section */
+/* src/components/AboutDeveloper.module.css - FIXED VERSION */
 
 .aboutSection {
   background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
@@ -126,6 +126,222 @@
   transform: translateY(-2px);
 }
 
+/* ========== GTU AI FEATURED PROJECT ========== */
+.featuredProject {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 40px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+
+.featuredProject::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-20px, -20px); }
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.projectIcon {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.projectBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.badgeGlow {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #10b981;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.projectTitle {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.projectDescription {
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0 0 24px 0;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.projectFeatures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.featureTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.featureTag svg {
+  flex-shrink: 0;
+}
+
+/* ✅ FIXED BUTTON STYLES */
+.projectButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 32px;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 28px;
+  font-family: inherit;
+  position: relative;
+  z-index: 1;
+}
+
+.projectButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  background: #f8faff;
+}
+
+.projectButton:active {
+  transform: translateY(-1px);
+}
+
+.projectButton span {
+  display: inline-block;
+}
+
+.projectButton svg {
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+
+.projectButton:hover svg {
+  transform: translateX(4px);
+}
+
+.projectStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statIcon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.statText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.statText strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+}
+
+.statText span {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
 /* ========== ACKNOWLEDGEMENTS ========== */
 .acknowledgements {
   display: grid;
@@ -249,6 +465,58 @@
     justify-content: center;
   }
 
+  .featuredProject {
+    padding: 24px;
+  }
+
+  .projectHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .projectIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .projectTitle {
+    font-size: 24px;
+  }
+
+  .projectDescription {
+    font-size: 14px;
+  }
+
+  .projectFeatures {
+    gap: 8px;
+  }
+
+  .featureTag {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .projectButton {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+
+  .projectStats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .statItem {
+    gap: 10px;
+  }
+
+  .statIcon {
+    font-size: 20px;
+  }
+
   .acknowledgements {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -289,6 +557,30 @@
   .skills {
     font-size: 11px;
     padding: 6px 12px;
+  }
+
+  .featuredProject {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .projectIcon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .projectTitle {
+    font-size: 22px;
+  }
+
+  .projectBadge {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .projectButton {
+    padding: 12px 20px;
+    font-size: 14px;
   }
 
   .ackCard {

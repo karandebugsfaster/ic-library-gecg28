@@ -443,3 +443,196 @@
 .text{
   color: black;
 }
+
+/* Add/Update these styles in src/app/books/[id]/book.module.css */
+
+/* ========== RENTAL INFO (UPDATED) ========== */
+.rentedInfo {
+  margin-top: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border-radius: 12px;
+  border: 2px solid #ffd93d;
+}
+
+.rentedInfo.overdue {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  border-color: #fca5a5;
+}
+
+.rentedHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.rentedHeader svg {
+  color: #d97706;
+  flex-shrink: 0;
+}
+
+.rentedInfo.overdue .rentedHeader svg {
+  color: #dc2626;
+}
+
+.rentedHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #92400e;
+}
+
+.rentedInfo.overdue .rentedHeader h3 {
+  color: #991b1b;
+}
+
+.rentalDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rentalItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  gap: 12px;
+}
+
+.rentalItem strong {
+  color: #92400e;
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 100px;
+}
+
+.rentedInfo.overdue .rentalItem strong {
+  color: #991b1b;
+}
+
+.rentalItem span {
+  color: #78350f;
+  font-weight: 500;
+  font-size: 14px;
+  text-align: right;
+  flex: 1;
+}
+
+.rentedInfo.overdue .rentalItem span {
+  color: #7f1d1d;
+}
+
+.statusText {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.overdueText {
+  color: #dc2626 !important;
+  font-weight: 700 !important;
+  background: rgba(220, 38, 38, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.dueTodayText {
+  color: #ea580c !important;
+  font-weight: 700 !important;
+  background: rgba(234, 88, 12, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.dueSoonText {
+  color: #d97706 !important;
+  font-weight: 700 !important;
+  background: rgba(217, 119, 6, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.activeText {
+  color: #059669 !important;
+  font-weight: 600 !important;
+  background: rgba(5, 150, 105, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+/* ========== RENTAL NOTICE (UPDATED) ========== */
+.rentalNotice {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%);
+  border-radius: 12px;
+  border: 2px solid #c7d2fe;
+  margin-top: 24px;
+}
+
+.rentalNotice svg {
+  flex-shrink: 0;
+  color: #667eea;
+  margin-top: 2px;
+}
+
+.noticeText h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.noticeText p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .rentedInfo {
+    padding: 16px;
+  }
+
+  .rentedHeader h3 {
+    font-size: 16px;
+  }
+
+  .rentalItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .rentalItem strong {
+    min-width: auto;
+  }
+
+  .rentalItem span {
+    text-align: left;
+  }
+
+  .statusText {
+    justify-content: flex-start;
+  }
+
+  .rentalNotice {
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .noticeText h4 {
+    font-size: 15px;
+  }
+
+  .noticeText p {
+    font-size: 13px;
+  }
+}

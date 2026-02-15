@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getUserSession, clearUserSession } from "@/lib/utils/session";
 import styles from "./profile.module.css";
+import FloatingChatButton from "@/components/FloatingChatButton";
 
 export default function StudentProfilePage() {
   const router = useRouter();
@@ -255,6 +256,7 @@ export default function StudentProfilePage() {
           )}
         </div>
       )}
+      <FloatingChatButton/>
     </div>
   );
 }

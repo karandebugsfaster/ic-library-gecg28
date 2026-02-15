@@ -1,6 +1,6 @@
 export const DEVELOPER_INFO = {
-  name: "Karan Maurya",  
-  role: "Full-Stack Developer & Student",
+  name: "Karan Maurya (240130117028)",  
+  role: "Full-Stack Developer & Student of IC department",
   description: "Passionate about building intuitive, user-centered applications that solve real-world problems. Specialized in modern web technologies and responsive design.",
   skills: "Next.js • React • MongoDB • Node.js",
   
@@ -20,7 +20,7 @@ export const ACKNOWLEDGEMENTS = {
   
   hod: {
     name: "Prof. M. R. Jani",  
-    title: "Head of Library Department",
+    title: "Departmental co-ordinator ( IC )",
     message: "Special thanks for the continuous support and encouragement throughout this project."
   }
 };
