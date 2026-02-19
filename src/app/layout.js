@@ -73,3 +73,5 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+//Something was broke, lets hope it gets fixed by this one.
