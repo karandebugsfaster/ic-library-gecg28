@@ -6,110 +6,121 @@ const BookSchema = new mongoose.Schema({
   // Book Identity
   isbn: {
     type: String,
-    required: [true, 'ISBN is required'],
     unique: true,
-    trim: true
+    sparse: true,
+    trim: true,
   },
 
   title: {
     type: String,
     required: [true, 'Title is required'],
-    trim: true
+    trim: true,
   },
 
   author: {
     type: String,
-    required: [true, 'Author is required'],
-    trim: true
+    default: 'Unknown',
+    trim: true,
   },
 
   genre: [{
     type: String,
-    trim: true
+    trim: true,
   }],
 
   publisher: {
     type: String,
-    trim: true
+    trim: true,
+    default: '',
   },
 
   publishedYear: {
-    type: Number
+    type: Number,
+    default: null,
   },
 
   edition: {
     type: String,
-    trim: true
+    trim: true,
+    default: '',
   },
 
   description: {
     type: String,
-    maxLength: 1000
+    maxLength: 2000,
+    default: '',
   },
 
   // Library Management
   physicalId: {
     type: String,
     unique: true,
-    sparse: true, // Allows null values
-    trim: true
+    sparse: true,
+    trim: true,
   },
 
   totalCopies: {
     type: Number,
     default: 1,
-    min: 1
+    min: 1,
   },
 
   // Rental Status
   rentalStatus: {
     type: String,
     enum: ['AVAILABLE', 'RENTED', 'UNDER_INVESTIGATION', 'LOST'],
-    default: 'AVAILABLE'
+    default: 'AVAILABLE',
+    index: true,
   },
 
   currentRental: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Rental',
-    default: null
+    default: null,
   },
 
-  // Search Optimization (denormalized)
+  // Current holder (for tracking)
+  currentHolder: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    default: null,
+  },
+
+  // Search Optimization
   searchText: {
     type: String,
-    lowercase: true
+    lowercase: true,
   },
 
   // Analytics
   totalRentals: {
     type: Number,
-    default: 0
+    default: 0,
   },
 
   lastRentedAt: {
     type: Date,
-    default: null
+    default: null,
   },
 
-  // Cover image URL (optional)
   coverImage: {
     type: String,
-    default: null
-  }
+    default: null,
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
-// Indexes for fast search
+// Indexes
 BookSchema.index({ rentalStatus: 1 });
-BookSchema.index({ isbn: 1 });
+BookSchema.index({ isbn: 1 }, { sparse: true });
 BookSchema.index({ genre: 1 });
-BookSchema.index({ searchText: 'text' }); // Full-text search index
+BookSchema.index({ searchText: 'text' });
 
-// Pre-save middleware to generate searchText
-// ✅ BEST (No async needed for simple operations)
-BookSchema.pre('save', function() {
-  this.searchText = `${this.title} ${this.author} ${this.isbn}`.toLowerCase();
+// Pre-save: Generate searchText
+BookSchema.pre('save', function(next) {
+  this.searchText = `${this.title} ${this.author} ${this.isbn || ''}`.toLowerCase();
+  next();
 });
 
 // Virtual for availability
@@ -117,21 +128,18 @@ BookSchema.virtual('isAvailable').get(function() {
   return this.rentalStatus === 'AVAILABLE';
 });
 
-// Static method for fast search
+// Static method for search
 BookSchema.statics.searchBooks = async function(query, filters = {}) {
   const searchFilter = {};
 
-  // Text search
   if (query) {
     searchFilter.$text = { $search: query };
   }
 
-  // Genre filter
   if (filters.genre) {
     searchFilter.genre = filters.genre;
   }
 
-  // Availability filter
   if (filters.available === true || filters.available === 'true') {
     searchFilter.rentalStatus = 'AVAILABLE';
   }

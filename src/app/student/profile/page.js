@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getUserSession, clearUserSession } from "@/lib/utils/session";
+// import { getUserSession, clearUserSession } from "@/lib/utils/session";
 import styles from "./profile.module.css";
 import FloatingChatButton from "@/components/FloatingChatButton";
 

@@ -4,11 +4,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getUserSession } from '@/lib/utils/session';
+import { useSession } from 'next-auth/react';
+// import { getUserSession } from '@/lib/utils/session';
 import styles from './assign.module.css';
 
 export default function AssignBookPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [books, setBooks] = useState([]);
@@ -21,15 +23,16 @@ export default function AssignBookPage() {
     rentalDays: 7
   });
 
-  useEffect(() => {
-    const session = getUserSession();
-    if (!session || session.role !== 'manager') {
-      router.push('/');
-      return;
-    }
+useEffect(() => {
+  if (status === 'loading') return; // wait for session
 
-    fetchAvailableBooks();
-  }, []);
+  if (!session || session.user.role !== 'manager') {
+    router.push('/');
+    return;
+  }
+
+  fetchAvailableBooks();
+}, [session, status]);
 
   const fetchAvailableBooks = async () => {
     try {

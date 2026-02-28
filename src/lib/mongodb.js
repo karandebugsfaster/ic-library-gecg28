@@ -1,12 +1,20 @@
 // src/lib/mongodb.js
 
-import mongoose from 'mongoose';
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import mongoose from "mongoose";
+
+// Load environment variables
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "../../.env.local") });
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
+    "Please define the MONGODB_URI environment variable inside .env.local",
   );
 }
 /**
@@ -31,7 +39,7 @@ async function connectDB() {
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      console.log('✅ MongoDB connected successfully');
+      console.log("✅ MongoDB connected successfully");
       return mongoose;
     });
   }
@@ -45,4 +53,4 @@ async function connectDB() {
 
   return cached.conn;
 }
-export default connectDB;   
+export default connectDB;

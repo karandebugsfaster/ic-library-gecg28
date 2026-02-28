@@ -1,130 +1,197 @@
-// src/lib/utils/email.js - Nodemailer Setup
+// src/lib/utils/email.js
 
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
-// Create reusable transporter
-const createTransporter = () => {
-  // Use Gmail or custom SMTP
-  const isGmail = process.env.SMTP_HOST === 'smtp.gmail.com';
+// Create transporter
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || process.env.EMAIL_HOST || "smtp.gmail.com",
+  port: process.env.SMTP_PORT || process.env.EMAIL_PORT || 587,
+  secure: process.env.SMTP_SECURE === "true" ? true : false,
+  auth: {
+    user: process.env.SMTP_USER || process.env.EMAIL_USER,
+    pass: process.env.SMTP_PASS || process.env.EMAIL_PASS,
+  },
+});
 
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT) || (isGmail ? 587 : 465),
-    secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    },
-    ...(isGmail && {
-      service: 'gmail'
-    })
-  });
-};
-
-// Send OTP email
-export async function sendOTPEmail(to, otp, enrollmentNumber) {
-  const transporter = createTransporter();
-
-  const mailOptions = {
-    from: `"IC Library" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
-    to: to,
-    subject: 'IC Library - Your Sign In OTP',
-    html: `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>IC Library OTP</title>
-      </head>
-      <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9fafb;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td align="center" style="padding: 40px 0;">
-              <table role="presentation" style="width: 600px; max-width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
-                
-                <!-- Header -->
-                <tr>
-                  <td style="padding: 40px 40px 20px 40px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 16px 16px 0 0;">
-                    <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 800;">IC Library</h1>
-                    <p style="margin: 8px 0 0 0; color: rgba(255,255,255,0.9); font-size: 14px;">Sign In Verification</p>
-                  </td>
-                </tr>
-
-                <!-- Body -->
-                <tr>
-                  <td style="padding: 40px;">
-                    <p style="margin: 0 0 16px 0; color: #374151; font-size: 16px; line-height: 1.6;">
-                      Hello <strong>${enrollmentNumber}</strong>,
-                    </p>
-                    
-                    <p style="margin: 0 0 24px 0; color: #374151; font-size: 16px; line-height: 1.6;">
-                      Your One-Time Password (OTP) for signing in to IC Library is:
-                    </p>
-
-                    <!-- OTP Box -->
-                    <table role="presentation" style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                      <tr>
-                        <td align="center" style="padding: 24px; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); border-radius: 12px;">
-                          <div style="font-size: 42px; font-weight: 800; letter-spacing: 12px; color: #667eea; font-family: 'Courier New', monospace;">
-                            ${otp}
-                          </div>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-                      ⏰ This OTP will expire in <strong>5 minutes</strong>.
-                    </p>
-
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-                      🔒 For security reasons, please do not share this OTP with anyone.
-                    </p>
-
-                    <p style="margin: 0; color: #6b7280; font-size: 14px; line-height: 1.6;">
-                      If you didn't request this, please ignore this email.
-                    </p>
-                  </td>
-                </tr>
-
-                <!-- Footer -->
-                <tr>
-                  <td style="padding: 24px 40px; background-color: #f9fafb; border-radius: 0 0 16px 16px; border-top: 1px solid #e5e7eb;">
-                    <p style="margin: 0; color: #9ca3af; font-size: 12px; text-align: center; line-height: 1.5;">
-                      IC Department Library Management System<br>
-                      This is an automated message, please do not reply.
-                    </p>
-                  </td>
-                </tr>
-
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `
-  };
-
+/**
+ * Send email
+ * @param {Object} options - Email options
+ * @param {string} options.to - Recipient email
+ * @param {string} options.subject - Email subject
+ * @param {string} options.html - HTML content
+ * @param {string} options.text - Plain text content (optional)
+ */
+export async function sendEmail({ to, subject, html, text }) {
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('✅ Email sent:', info.messageId);
+    if (!process.env.SMTP_USER && !process.env.EMAIL_USER) {
+      console.warn("Email credentials not configured. Email not sent.");
+      return { success: false, error: "Email not configured" };
+    }
+
+    if (!process.env.SMTP_PASS && !process.env.EMAIL_PASS) {
+      console.warn("Email credentials not configured. Email not sent.");
+      return { success: false, error: "Email not configured" };
+    }
+
+    const info = await transporter.sendMail({
+      from:
+        process.env.SMTP_FROM ||
+        `"IC Library System" <${process.env.SMTP_USER || process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+      text: text || html.replace(/<[^>]*>/g, ""), // Strip HTML tags for text version
+    });
+
+    console.log(
+      "✅ Email sent successfully to:",
+      to,
+      "| Message ID:",
+      info.messageId,
+    );
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Email send error:', error);
-    throw new Error('Failed to send email');
+    console.error("❌ Email error:", error.message);
+    return { success: false, error: error.message };
   }
 }
 
-// Verify transporter configuration
+/**
+ * Send book request notification to manager
+ */
+export async function sendRequestNotification({
+  manager,
+  faculty,
+  student,
+  book,
+  type,
+  reason,
+}) {
+  return sendEmail({
+    to: manager.email,
+    subject: `New Book ${type === "issue" ? "Issue" : "Return"} Request`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1B2E4B;">New Book Request</h2>
+        <div style="background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Type:</strong> ${type === "issue" ? "Book Issue" : "Book Return"}</p>
+          <p><strong>Student:</strong> ${student.name} (${student.enrollmentNumber})</p>
+          <p><strong>Faculty:</strong> ${faculty.name}</p>
+          <p><strong>Book:</strong> ${book.title} by ${book.author}</p>
+          ${reason ? `<p><strong>Reason:</strong> ${reason}</p>` : ""}
+          <p><strong>Requested At:</strong> ${new Date().toLocaleString()}</p>
+        </div>
+        <p>Please log in to the system to approve or reject this request.</p>
+      </div>
+    `,
+  });
+}
+
+/**
+ * Send approval/rejection notification to faculty
+ */
+export async function sendDecisionNotification({
+  faculty,
+  student,
+  book,
+  type,
+  approved,
+  notes,
+}) {
+  return sendEmail({
+    to: faculty.email,
+    subject: `Book Request ${approved ? "Approved" : "Rejected"}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: ${approved ? "#059669" : "#991B1B"};">
+          Request ${approved ? "Approved" : "Rejected"}
+        </h2>
+        <div style="background: #F8FAFC; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <p><strong>Student:</strong> ${student.name}</p>
+          <p><strong>Book:</strong> ${book.title}</p>
+          <p><strong>Type:</strong> ${type === "issue" ? "Issue" : "Return"}</p>
+          ${notes ? `<p><strong>${approved ? "Notes" : "Reason"}:</strong> ${notes}</p>` : ""}
+        </div>
+      </div>
+    `,
+  });
+}
+
+/**
+ * Send OTP email for authentication
+ */
+export async function sendOTPEmail(email, otp, enrollmentNumber) {
+  return sendEmail({
+    to: email,
+    subject: "Your IC Library OTP Code",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px; border-radius: 8px; text-align: center; color: white; margin-bottom: 20px;">
+          <h1 style="margin: 0; font-size: 28px;">IC Library System</h1>
+          <p style="margin: 10px 0 0 0; font-size: 14px; opacity: 0.9;">One-Time Password</p>
+        </div>
+        
+        <div style="background: #F8FAFC; padding: 30px; border-radius: 8px; border-left: 4px solid #667eea;">
+          <p style="margin: 0 0 20px 0; color: #334155; font-size: 14px;">Hello ${enrollmentNumber},</p>
+          
+          <p style="margin: 0 0 30px 0; color: #334155; font-size: 14px;">Your One-Time Password (OTP) for signing in to IC Library is:</p>
+          
+          <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; border: 2px dashed #667eea; margin: 30px 0;">
+            <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #667eea; font-family: 'Courier New', monospace;">
+              ${otp}
+            </div>
+          </div>
+          
+          <p style="margin: 20px 0 0 0; color: #64748B; font-size: 12px; background: #FEF3C7; padding: 10px; border-radius: 4px; border-left: 3px solid #F59E0B;">
+            ⏰ <strong>Valid for 5 minutes only</strong>
+          </p>
+          
+          <p style="margin: 20px 0 10px 0; color: #334155; font-size: 13px;">
+            <strong>Important:</strong> Never share this code with anyone. The IC Library team will never ask for your OTP.
+          </p>
+        </div>
+        
+        <p style="margin-top: 20px; color: #94A3B8; font-size: 12px; text-align: center;">
+          If you didn't request this code, you can safely ignore this email.
+        </p>
+      </div>
+    `,
+    text: `Your IC Library OTP is: ${otp}\n\nThis code is valid for 5 minutes.\n\nNever share this code with anyone.`,
+  });
+}
+
+/**
+ * Verify email configuration
+ */
 export async function verifyEmailConfig() {
   try {
-    const transporter = createTransporter();
+    const testEmail = process.env.SMTP_USER || process.env.EMAIL_USER;
+    if (!testEmail) {
+      return {
+        success: false,
+        error: "Email user not configured (SMTP_USER or EMAIL_USER)",
+      };
+    }
+
+    const testPass = process.env.SMTP_PASS || process.env.EMAIL_PASS;
+    if (!testPass) {
+      return {
+        success: false,
+        error: "Email password not configured (SMTP_PASS or EMAIL_PASS)",
+      };
+    }
+
+    // Try to verify connection
     await transporter.verify();
-    console.log('✅ Email configuration verified');
-    return true;
+    return {
+      success: true,
+      message: "Email configuration is valid",
+      email: testEmail,
+    };
   } catch (error) {
-    console.error('❌ Email configuration error:', error);
-    return false;
+    return {
+      success: false,
+      error: `Email configuration error: ${error.message}`,
+    };
   }
 }
