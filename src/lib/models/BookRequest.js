@@ -1,105 +1,116 @@
 // src/lib/models/BookRequest.js
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const BookRequestSchema = new mongoose.Schema({
-  // References
-  studentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-    index: true,
-  },
+const BookRequestSchema = new mongoose.Schema(
+  {
+    // References
+    studentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
 
-  facultyId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-    index: true,
-  },
+    facultyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
 
-  bookId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Book',
-    required: true,
-    index: true,
-  },
+    bookId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+      required: true,
+      index: true,
+    },
 
-  // Request Type
-  type: {
-    type: String,
-    enum: ['issue', 'return'],
-    required: true,
-  },
+    // Request Type
+    type: {
+      type: String,
+      enum: ["issue", "return"],
+      required: true,
+    },
 
-  // Request Status
-  status: {
-    type: String,
-    enum: ['pending', 'approved', 'rejected'],
-    default: 'pending',
-    index: true,
-  },
+    // Request Status
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+      index: true,
+    },
 
-  // Timestamps
-  requestedAt: {
-    type: Date,
-    default: Date.now,
-  },
+    // Timestamps
+    requestedAt: {
+      type: Date,
+      default: Date.now,
+    },
 
-  approvedAt: {
-    type: Date,
-    default: null,
-  },
+    approvedAt: {
+      type: Date,
+      default: null,
+    },
 
-  rejectedAt: {
-    type: Date,
-    default: null,
-  },
+    rejectedAt: {
+      type: Date,
+      default: null,
+    },
 
-  // Approved/Rejected By
-  approvedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    default: null,
-  },
+    // Approved/Rejected By
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
 
-  rejectedBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    default: null,
-  },
+    rejectedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
 
-  // Additional Info
-  reason: {
-    type: String,
-    default: null,
-  },
+    // Rental Duration (in days)
+    rentalDays: {
+      type: Number,
+      default: 7,
+      min: 1,
+      max: 30,
+    },
 
-  managerNotes: {
-    type: String,
-    default: null,
-  },
+    // Additional Info
+    reason: {
+      type: String,
+      default: null,
+    },
 
-  // Snapshots for historical accuracy
-  studentSnapshot: {
-    name: String,
-    email: String,
-    enrollmentNumber: String,
-  },
+    managerNotes: {
+      type: String,
+      default: null,
+    },
 
-  facultySnapshot: {
-    name: String,
-    email: String,
-  },
+    // Snapshots for historical accuracy
+    studentSnapshot: {
+      name: String,
+      email: String,
+      enrollmentNumber: String,
+    },
 
-  bookSnapshot: {
-    title: String,
-    isbn: String,
-    author: String,
+    facultySnapshot: {
+      name: String,
+      email: String,
+    },
+
+    bookSnapshot: {
+      title: String,
+      isbn: String,
+      author: String,
+    },
   },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  },
+);
 
 // Indexes for efficient queries
 BookRequestSchema.index({ status: 1, requestedAt: -1 });
@@ -108,16 +119,16 @@ BookRequestSchema.index({ studentId: 1, status: 1 });
 BookRequestSchema.index({ type: 1, status: 1 });
 
 // Pre-save middleware to populate snapshots
-BookRequestSchema.pre('save', async function() {
+BookRequestSchema.pre("save", async function () {
   if (this.isNew) {
     try {
-      const User = mongoose.model('User');
-      const Book = mongoose.model('Book');
+      const User = mongoose.model("User");
+      const Book = mongoose.model("Book");
 
       const [student, faculty, book] = await Promise.all([
-        User.findById(this.studentId).select('name email enrollmentNumber'),
-        User.findById(this.facultyId).select('name email'),
-        Book.findById(this.bookId).select('title isbn author'),
+        User.findById(this.studentId).select("name email enrollmentNumber"),
+        User.findById(this.facultyId).select("name email"),
+        Book.findById(this.bookId).select("title isbn author"),
       ]);
 
       if (student) {
@@ -142,12 +153,12 @@ BookRequestSchema.pre('save', async function() {
           author: book.author,
         };
       }
-
     } catch (error) {
-      console.error('Error populating snapshots:', error);
+      console.error("Error populating snapshots:", error);
       throw error; // 🔥 important if you want it to fail properly
     }
   }
 });
 
-export default mongoose.models.BookRequest || mongoose.model('BookRequest', BookRequestSchema);
+export default mongoose.models.BookRequest ||
+  mongoose.model("BookRequest", BookRequestSchema);

@@ -26,7 +26,7 @@ export async function POST(request, context) {
       await session.abortTransaction();
       return Response.json(
         { success: false, error: "Manager ID is required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -41,7 +41,7 @@ export async function POST(request, context) {
       await session.abortTransaction();
       return Response.json(
         { success: false, error: "Invalid manager" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -55,7 +55,7 @@ export async function POST(request, context) {
       await session.abortTransaction();
       return Response.json(
         { success: false, error: "Request not found or already processed" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -67,7 +67,7 @@ export async function POST(request, context) {
       await session.abortTransaction();
       return Response.json(
         { success: false, error: "Related entities not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -77,17 +77,18 @@ export async function POST(request, context) {
         await session.abortTransaction();
         return Response.json(
           { success: false, error: "Book is no longer available" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
+      const rentalDays = bookRequest.rentalDays || 7;
       const rental = await Rental.create(
         [
           {
             userId: student._id,
             bookId: book._id,
             issuedAt: new Date(),
-            dueDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+            dueDate: new Date(Date.now() + rentalDays * 24 * 60 * 60 * 1000),
             status: "ACTIVE",
             userSnapshot: {
               enrollmentNumber: student.enrollmentNumber,
@@ -99,7 +100,7 @@ export async function POST(request, context) {
             },
           },
         ],
-        { session }
+        { session },
       );
 
       await Book.updateOne(
@@ -111,13 +112,13 @@ export async function POST(request, context) {
           $inc: { totalRentals: 1 },
           lastRentedAt: new Date(),
         },
-        { session }
+        { session },
       );
 
       await User.updateOne(
         { _id: student._id },
         { $inc: { activeRentals: 1, totalRentals: 1 } },
-        { session }
+        { session },
       );
     }
 
@@ -133,26 +134,26 @@ export async function POST(request, context) {
         await session.abortTransaction();
         return Response.json(
           { success: false, error: "No active rental found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
       await Rental.updateOne(
         { _id: rental._id },
         { status: "RETURNED", actualReturnedAt: new Date() },
-        { session }
+        { session },
       );
 
       await Book.updateOne(
         { _id: book._id },
         { rentalStatus: "AVAILABLE", currentRental: null, currentHolder: null },
-        { session }
+        { session },
       );
 
       await User.updateOne(
         { _id: student._id },
         { $inc: { activeRentals: -1 } },
-        { session }
+        { session },
       );
     }
 
@@ -164,7 +165,7 @@ export async function POST(request, context) {
         approvedBy: manager._id,
         managerNotes: notes,
       },
-      { session }
+      { session },
     );
 
     await session.commitTransaction();
@@ -184,14 +185,13 @@ export async function POST(request, context) {
       success: true,
       message: "Request approved successfully",
     });
-
   } catch (error) {
     if (session) await session.abortTransaction();
     console.error("Approve request error:", error);
 
     return Response.json(
       { success: false, error: error.message || "Failed to approve request" },
-      { status: 500 }
+      { status: 500 },
     );
   } finally {
     if (session) session.endSession();
